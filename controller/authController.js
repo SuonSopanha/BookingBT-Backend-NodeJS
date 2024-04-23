@@ -1,9 +1,14 @@
+const User = require('../models/User');
 
 const signup = (req, res,next) => {
-    res.json({
-        status : "success",
-        message : "user created successfully"
+
+    const body = req.body;
+
+    const newUser = User.create({
+        fullname : body.fullname,
+
     })
+
 }
 
 module.exports = {signup}
