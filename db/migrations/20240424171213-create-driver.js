@@ -24,6 +24,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+      photoURL:{
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       contactNumber: {
         type: Sequelize.STRING,
         allowNull: false
