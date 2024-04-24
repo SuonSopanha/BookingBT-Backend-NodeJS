@@ -1,16 +1,31 @@
-// models/user.js
 'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Driver extends Model {
     static associate(models) {
       // Add associations here if needed
     }
   }
   
-  User.init({
-    fullName: {
+  Driver.init({
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    dateOfBirth: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    contactNumber: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -19,25 +34,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    dateOfBirth: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    gender: {
+    address: {
       type: DataTypes.STRING,
       allowNull: false
     }
   }, {
     sequelize,
-    modelName: 'User',
-    tableName: 'Users', // Ensure correct table name
+    modelName: 'Driver',
+    tableName: 'Drivers', // Ensure correct table name
     timestamps: true,
     underscored: true, // Use underscored naming convention for columns
   });
 
-  return User;
+  return Driver;
 };
