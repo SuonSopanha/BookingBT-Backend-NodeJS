@@ -18,11 +18,11 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      DriveId: {
+      DriverId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Drives',
+          model: 'Drivers',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -49,7 +49,9 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       rating: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.ENUM(
+          '0', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5'
+        ),
         allowNull: false
       },
       feedbackText: {
@@ -58,7 +60,7 @@ module.exports = {
       },
       feedbackDate: {
         type: Sequelize.DATE,
-        allowNull: true
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

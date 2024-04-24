@@ -64,15 +64,27 @@ module.exports = {
         allowNull: false
       },
       bookingStatus: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(
+          'pending',
+          'confirmed',
+          'completed',
+          'canceled'
+        ),
         allowNull: false
       },
+      
       userContactNumber: {
         type: Sequelize.STRING,
         allowNull: false
       },
       seatType: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(
+          'front',
+          'middle',
+          'back',
+          'window',
+          'aisle'
+        ),
         allowNull: true
       },
       seatAmount: {

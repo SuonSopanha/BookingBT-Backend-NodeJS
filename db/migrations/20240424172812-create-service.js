@@ -19,7 +19,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       soloRideOption: {
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       destination: {

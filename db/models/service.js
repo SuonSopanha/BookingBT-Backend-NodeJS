@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       soloRideOption: {
-        type: DataTypes.STRING,
+        type: Sequelize.BOOLEAN,
         allowNull: false,
       },
       destination: {

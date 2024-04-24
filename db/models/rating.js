@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Define associations here if needed
       Rating.belongsTo(models.User, { foreignKey: 'UserId', onDelete: 'CASCADE' });
-      Rating.belongsTo(models.Drive, { foreignKey: 'DriveId', onDelete: 'CASCADE' });
+      Rating.belongsTo(models.Drive, { foreignKey: 'DriverId', onDelete: 'CASCADE' });
       Rating.belongsTo(models.Service, { foreignKey: 'ServiceId', onDelete: 'CASCADE' });
       Rating.belongsTo(models.Booking, { foreignKey: 'BookingId', onDelete: 'CASCADE' });
     }
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    DriveId: {
+    DriverId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
@@ -30,7 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     rating: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.ENUM(
+        '0', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5'
+      ),
       allowNull: false
     },
     feedbackText: {
@@ -39,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     feedbackDate: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false
     }
   }, {
     sequelize,

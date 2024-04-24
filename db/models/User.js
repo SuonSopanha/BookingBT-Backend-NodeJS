@@ -30,11 +30,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       dateOfBirth: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       gender: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: Sequelize.ENUM('male', 'female', 'other'),
+        allowNull: true
       },
     },
     {

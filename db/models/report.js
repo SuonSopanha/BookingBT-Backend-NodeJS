@@ -25,7 +25,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     reportType: {
-      type: DataTypes.STRING,
+      type: Sequelize.ENUM(
+        'price', 
+        'hygiene', 
+        'convenience', 
+        'driver_behavior',
+        'vehicle_condition',
+        'safety',
+        'service_quality',
+        'other'
+      ),
       allowNull: false
     },
     reportContent: {
@@ -34,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     reportDate: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false
     }
   }, {
     sequelize,

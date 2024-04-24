@@ -19,7 +19,15 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       dayOfWeek: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday'
+        ),
         allowNull: false
       },
       departureTime: {

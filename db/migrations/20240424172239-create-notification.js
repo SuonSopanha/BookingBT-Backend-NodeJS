@@ -39,7 +39,17 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       notificationType: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(
+          'ride_request',
+          'ride_accepted',
+          'ride_canceled',
+          'ride_completed',
+          'payment_confirmation',
+          'promotional',
+          'driver_arrival',
+          'emergency',
+          'other'
+        ),
         allowNull: false
       },
       notificationMessage: {
@@ -47,7 +57,7 @@ module.exports = {
         allowNull: true
       },
       notificationStatus: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM('pending', 'sent', 'read', 'archived'), // Define your notification statuses here
         allowNull: false
       },
       notificationDate: {

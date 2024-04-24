@@ -39,7 +39,16 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       reportType: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM(
+          'price', 
+          'hygiene', 
+          'convenience', 
+          'driver_behavior',
+          'vehicle_condition',
+          'safety',
+          'service_quality',
+          'other'
+        ),
         allowNull: false
       },
       reportContent: {
@@ -48,7 +57,7 @@ module.exports = {
       },
       reportDate: {
         type: Sequelize.DATE,
-        allowNull: true
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
