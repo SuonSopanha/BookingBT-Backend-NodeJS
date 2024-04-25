@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Define associations here if needed
       Rating.belongsTo(models.User, { foreignKey: 'UserId', onDelete: 'CASCADE' });
-      Rating.belongsTo(models.Drive, { foreignKey: 'DriverId', onDelete: 'CASCADE' });
+      Rating.belongsTo(models.Driver, { foreignKey: 'DriverId', onDelete: 'CASCADE' });
       Rating.belongsTo(models.Service, { foreignKey: 'ServiceId', onDelete: 'CASCADE' });
       Rating.belongsTo(models.Booking, { foreignKey: 'BookingId', onDelete: 'CASCADE' });
     }

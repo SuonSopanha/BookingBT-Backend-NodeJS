@@ -8,6 +8,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "DriverId",
         onDelete: "CASCADE",
       });
+
+      // has many booking
+      Service.hasMany(models.Booking, { foreignKey: 'ServiceId', onDelete: 'CASCADE' });
+
+      // has many pricing
+      Service.hasMany(models.Pricing,{foreignKey:'ServiceId',onDelete:'CASCADE'})
+
+      // has many schedule
+      Service.hasMany(models.Schedule,{foreignKey:'ServiceId',onDelete:'CASCADE'})
+
     }
   }
   Service.init(
