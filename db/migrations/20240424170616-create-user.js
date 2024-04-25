@@ -33,6 +33,22 @@ module.exports = {
         type: Sequelize.ENUM('male', 'female', 'other'),
         allowNull: true
       },
+      role: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      authToken: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      emailVerificationToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      isEmailVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
