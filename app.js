@@ -3,9 +3,14 @@ require('dotenv').config();
 const express = require('express');
 const authRouter = require('./routes/authRoute')
 const sequelize = require('./config/database');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors({
+    origin: 'http://localhost:3000', // Replace with your Next.js application's domain
+    credentials: true // If you're using cookies or authentication headers, set this to true
+  }));
 app.use(express.json());
 
 app.get('/', (req, res) => {

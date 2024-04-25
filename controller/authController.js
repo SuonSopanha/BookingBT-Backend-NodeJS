@@ -5,12 +5,15 @@ const User = require('../db/models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+//signup
 const signup = async (req, res, next) => {
     try {
         const { fullname, email, password, confirm_password } = req.body;
+        console.log(req.body)
 
         // Check if user already exists
         const existingUser = await User.findOne({ where: { email: email } });
+
         if (existingUser) {
             return res.status(400).json({
                 success: false,
@@ -53,6 +56,49 @@ const signup = async (req, res, next) => {
     }
 };
 
+//login
+const login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        console.log(req.body)
+        const user = await User.findOne({ where: { email: email } });   
 
-module.exports = {signup}
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid email or password'
+            });
+        }
+
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid email or password'
+            });
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        return res.status(200).json({
+            success: true,
+            message: 'Login successful',
+            token
+        });
+
+    } catch (error) {
+        // Handle any errors
+        console.error('Login failed:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
+
+
+}
+
+
+
+module.exports = {signup,login};
 

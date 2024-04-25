@@ -38,15 +38,15 @@ module.exports = {
         allowNull: false,
       },
       authToken: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         defaultValue: "",
       },
       emailVerificationToken: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       isEmailVerified: {
-        type: DataTypes.BOOLEAN,
+        type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
       createdAt: {
