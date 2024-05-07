@@ -30,7 +30,7 @@ module.exports = {
       },
       ServiceId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Services',
           key: 'id'
@@ -40,7 +40,7 @@ module.exports = {
       },
       BookingId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Bookings',
           key: 'id'

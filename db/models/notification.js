@@ -29,8 +29,6 @@ const Notification = sequelize.define(
         "ride_accepted",
         "ride_canceled",
         "ride_completed",
-        "payment_confirmation",
-        "promotional",
         "driver_arrival",
         "emergency",
         "other"

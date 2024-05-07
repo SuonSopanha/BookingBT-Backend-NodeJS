@@ -44,8 +44,6 @@ module.exports = {
           'ride_accepted',
           'ride_canceled',
           'ride_completed',
-          'payment_confirmation',
-          'promotional',
           'driver_arrival',
           'emergency',
           'other'

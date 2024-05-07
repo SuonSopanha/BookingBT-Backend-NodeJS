@@ -22,11 +22,11 @@ const Rating = sequelize.define(
     },
     ServiceId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     BookingId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     rating: {
       type: Sequelize.ENUM(
