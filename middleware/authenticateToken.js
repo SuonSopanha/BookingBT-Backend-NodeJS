@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 // Middleware function to verify and decode JWT token
@@ -11,7 +12,7 @@ function authenticateToken(req, res, next) {
   }
 
   // Verify and decode token
-  jwt.verify(token, 'your-secret-key', (err, decoded) => {
+  jwt.verify(token,  process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return res.status(403).json({ error: 'Forbidden: Invalid token' });
     }
