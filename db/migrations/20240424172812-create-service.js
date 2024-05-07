@@ -38,8 +38,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      vehiclePictureURL:{
-        type: Sequelize.STRING,
+      vehiclePictureURL: {
+        type: DataTypes.ARRAYS(DataTypes.STRING),
         allowNull: true,
       },
       createdAt: {
