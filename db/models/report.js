@@ -55,6 +55,8 @@ const Report = sequelize.define(
 
 module.exports = Report;
 
+//-----------------------------------------------------
+
 // module.exports = (sequelize, DataTypes) => {
 //   class Report extends Model {
 //     static associate(models) {

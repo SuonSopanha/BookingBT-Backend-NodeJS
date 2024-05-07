@@ -48,9 +48,17 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    address: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
     role: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    phoneNumber:{
+      type: Sequelize.STRING,
+      allowNull:true
     },
     authToken: {
       type: DataTypes.STRING,
@@ -64,14 +72,7 @@ const User = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
+
   },
   {
     modelName: 'User',
@@ -81,6 +82,8 @@ const User = sequelize.define(
     updatedAt: 'updatedAt',
   }
 );
+
+
 
 // Define associations
 User.hasMany(Driver, { foreignKey: 'UserId' });

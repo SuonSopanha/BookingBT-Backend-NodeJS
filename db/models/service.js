@@ -50,6 +50,10 @@ const Service = sequelize.define(
 
 module.exports = Service;
 
+
+
+//-------------------------------------------
+
 // module.exports = (sequelize, DataTypes) => {
 //   class Service extends Model {
 //     static associate(models) {

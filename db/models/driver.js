@@ -9,7 +9,7 @@ const Driver = sequelize.define(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
     },
     UserId: {
       type: DataTypes.INTEGER,
@@ -49,6 +49,10 @@ const Driver = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isApproved: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     modelName: "Driver",
@@ -59,6 +63,8 @@ const Driver = sequelize.define(
 );
 
 module.exports = Driver;
+
+//---------------------------------------------------
 
 // module.exports = (sequelize, DataTypes) => {
 //   class Driver extends Model {

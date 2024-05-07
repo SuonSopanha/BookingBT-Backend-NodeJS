@@ -33,6 +33,14 @@ module.exports = {
         type: Sequelize.ENUM('male', 'female', 'other'),
         allowNull: true
       },
+      address: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      phoneNumber:{
+        type: Sequelize.STRING,
+        allowNull:true
+      },
       role: {
         type: Sequelize.STRING,
         allowNull: false,

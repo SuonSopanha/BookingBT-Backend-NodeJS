@@ -98,6 +98,11 @@ const Booking = sequelize.define('Booking', {
 
 module.exports = Booking;
 
+
+
+
+//----------------------------------------------------------------------------------------
+
 // module.exports = (sequelize, DataTypes) => {
 //   class Booking extends Model {
 //     static associate(models) {

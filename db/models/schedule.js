@@ -47,6 +47,9 @@ const Schedule = sequelize.define(
 
 module.exports = Schedule;
 
+
+//----------------------------------
+
 // module.exports = (sequelize, DataTypes) => {
 //   class Schedule extends Model {
 //     static associate(models) {

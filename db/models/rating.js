@@ -30,17 +30,17 @@ const Rating = sequelize.define(
     },
     rating: {
       type: Sequelize.ENUM(
-        "0",
-        "0.5",
-        "1",
-        "1.5",
-        "2",
-        "2.5",
-        "3",
-        "3.5",
-        "4",
-        "4.5",
-        "5"
+        0,
+        0.5,
+        1,
+        1.5,
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        4.5,
+        5
       ),
       allowNull: false,
     },
@@ -61,6 +61,8 @@ const Rating = sequelize.define(
   }
 );
 module.exports = Rating;
+
+//------------------------------------------------
 
 // module.exports = (sequelize, DataTypes) => {
 //   class Rating extends Model {
