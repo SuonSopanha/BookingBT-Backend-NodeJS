@@ -8,11 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      BookingID: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        unique: true
-      },
       UserID: {
         type: Sequelize.INTEGER,
         allowNull: false,

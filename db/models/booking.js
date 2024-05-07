@@ -15,10 +15,6 @@ const Booking = sequelize.define('Booking', {
       primaryKey: true,
       autoIncrement: true
     },
-    BookingID: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     UserID: {
       type: DataTypes.INTEGER,
       allowNull: false
