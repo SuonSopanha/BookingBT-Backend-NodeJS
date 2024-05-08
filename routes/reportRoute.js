@@ -1,6 +1,6 @@
 const express = require('express');
 const authenticateToken = require('../middleware/authenticateToken');
-const { createReport, getAllReports, getReportById, updateReport, deleteReport } = require('../controllers/reportController');
+const { createReport, getAllReports, getReportById, updateReport, deleteReport } = require('../controller/reportController');
 
 const router = express.Router();
 
