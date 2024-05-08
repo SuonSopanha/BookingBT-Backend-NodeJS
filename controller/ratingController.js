@@ -1,4 +1,4 @@
-const { Rating } = require('../models');
+const  Rating  = require('../db/models/rating');
 
 // Function to create a rating
 async function createRating(req, res) {

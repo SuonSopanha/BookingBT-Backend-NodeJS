@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const authRouter = require('./routes/authRoute')
+const userRouter = require('./routes/userRoute')
+const driverRouter = require('./routes/driverRoute')
 const sequelize = require('./config/database');
 const cors = require('cors');
 
@@ -21,6 +23,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth',authRouter)
+app.use('/api/v1/user',userRouter)
+app.use('/api/v1/driver',driverRouter)
 
 app.use('*', (req, res) => {
     res.status(404).json()

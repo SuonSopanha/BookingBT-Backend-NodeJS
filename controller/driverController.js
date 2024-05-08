@@ -1,9 +1,9 @@
-const { Driver } = require('../models');
+const  Driver = require("../db/models/driver");
 
 // Function to create a new driver
 async function createDriver(req, res) {
   try {
-    const { userId } = req; // Get userId from request object
+    const  userId  = req.user.id; // Get userId from request object
     const { firstName, lastName, gender, dateOfBirth, photoURL, contactNumber, email, address } = req.body;
 
     // Create the driver with UserId
@@ -32,7 +32,7 @@ async function createDriver(req, res) {
 async function getAllDrivers(req, res) {
   try {
     // Find all drivers associated with the UserId
-    const drivers = await Driver.findAll({ where: { UserId: req.userId } });
+    const drivers = await Driver.findAll({ where: { UserId: req.user.id } });
 
     // Return drivers
     res.json(drivers);
@@ -48,7 +48,7 @@ async function getDriverById(req, res) {
   try {
     const { id } = req.params;
     // Find driver by ID associated with the UserId
-    const driver = await Driver.findOne({ where: { id, UserId: req.userId } });
+    const driver = await Driver.findOne({ where: { id , UserId: req.user.id} });
 
     // If driver not found
     if (!driver) {
@@ -71,7 +71,7 @@ async function updateDriver(req, res) {
     const { firstName, lastName, gender, dateOfBirth, photoURL, contactNumber, email, address } = req.body;
 
     // Find driver by ID associated with the UserId
-    let driver = await Driver.findOne({ where: { id, UserId: req.userId } });
+    let driver = await Driver.findOne({ where: { id, UserId: req.user.id } });
 
     // If driver not found
     if (!driver) {
@@ -105,7 +105,7 @@ async function deleteDriver(req, res) {
     const { id } = req.params;
 
     // Find driver by ID associated with the UserId
-    const driver = await Driver.findOne({ where: { id, UserId: req.userId } });
+    const driver = await Driver.findOne({ where: { id, UserId: req.user.id } });
 
     // If driver not found
     if (!driver) {

@@ -1,4 +1,4 @@
-const { Booking } = require('../models');
+const Booking  = require('../db/models/booking');
 
 // Function to create a booking
 async function createBooking(req, res) {

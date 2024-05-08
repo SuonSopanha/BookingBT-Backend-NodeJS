@@ -1,7 +1,8 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../../config/database');
-const bcrypt = require('bcrypt');
 const Driver = require('./driver');
+const bcrypt = require('bcrypt');
+
 
 // Define User model
 const User = sequelize.define(
@@ -55,6 +56,7 @@ const User = sequelize.define(
     role: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'user',
     },
     phoneNumber:{
       type: Sequelize.STRING,
@@ -86,7 +88,9 @@ const User = sequelize.define(
 
 
 // Define associations
-User.hasMany(Driver, { foreignKey: 'UserId' });
-Driver.belongsTo(User, { foreignKey: 'UserId' });
+User.assosiations = (Driver) => {
+  User.hasMany(Driver, { foreignKey: 'UserId', sourceKey: 'id' });
+};
+
 
 module.exports = User;

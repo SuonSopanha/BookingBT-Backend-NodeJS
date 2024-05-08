@@ -1,5 +1,6 @@
 "use strict";
 const { Model, DataTypes, Sequelize } = require("sequelize");
+
 const sequelize = require("../../config/database");
 
 const Driver = sequelize.define(
@@ -14,6 +15,14 @@ const Driver = sequelize.define(
     UserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      foreignKey: 'UserId',
+
+      references: {
+        model: "User",
+        key: "id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     },
     firstName: {
       type: DataTypes.STRING,
@@ -58,9 +67,12 @@ const Driver = sequelize.define(
     modelName: "Driver",
     tableName: "Drivers", // Ensure correct table name
     timestamps: true,
-    underscored: true, // Use underscored naming convention for columns
   }
 );
+
+Driver.associate = function (models) {
+  Driver.belongsTo(models.User, { foreignKey: "UserId", onDelete: "CASCADE" });
+};
 
 module.exports = Driver;
 
