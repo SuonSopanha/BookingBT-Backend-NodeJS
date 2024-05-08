@@ -1,9 +1,10 @@
-const { User } = require('../models');
+const User = require('../db/models/user');
 
 // Function to allow user to add additional information
 async function addInfo(req, res) {
   try {
-    const userId = req.user.userId; // Get userId from decoded JWT token
+    const userId = req.user.id; // Get userId from decoded JWT token
+    
     const { photoURL, dateOfBirth, gender, address, phoneNumber } = req.body;
 
     // Find the user by userId
@@ -35,7 +36,7 @@ async function addInfo(req, res) {
 // Function to allow user to edit their profile
 async function editUser(req, res) {
   try {
-    const userId = req.user.userId; // Get userId from decoded JWT token
+    const userId = req.user.id; // Get userId from decoded JWT token
     const { fullName, email, photoURL, dateOfBirth, gender, address, phoneNumber } = req.body;
 
     // Find the user by userId

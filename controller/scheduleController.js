@@ -1,4 +1,4 @@
-const { Schedule } = require('../models');
+const Schedule = require('../db/models/schedule');
 
 // Function to create a schedule
 async function createSchedule(req, res) {
