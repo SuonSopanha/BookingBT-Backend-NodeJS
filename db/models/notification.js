@@ -56,7 +56,7 @@ const Notification = sequelize.define(
   }
 );
 
-export default Notification;
+module.exports = Notification;
 
 // module.exports = (sequelize, DataTypes) => {
 //   class Notification extends Model {
