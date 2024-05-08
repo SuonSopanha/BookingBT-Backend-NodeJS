@@ -1,6 +1,6 @@
 const express = require('express');
 const authenticateToken = require('../middleware/authenticateToken');
-const { createPricing, getAllPricings, getPricingById, updatePricing, deletePricing } = require('../controllers/pricingController');
+const { createPricing, getAllPricings, getPricingById, updatePricing, deletePricing } = require('../controller/pricingController');
 
 const router = express.Router();
 

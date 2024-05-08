@@ -1,6 +1,6 @@
 const express = require('express');
 const authenticateToken = require('../middleware/authenticateToken');
-const { createSchedule, getAllSchedules, getScheduleById, updateSchedule, deleteSchedule } = require('../controllers/scheduleController');
+const { createSchedule, getAllSchedules, getScheduleById, updateSchedule, deleteSchedule } = require('../controller/scheduleController');
 
 const router = express.Router();
 

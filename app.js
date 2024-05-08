@@ -4,6 +4,13 @@ const express = require('express');
 const authRouter = require('./routes/authRoute')
 const userRouter = require('./routes/userRoute')
 const driverRouter = require('./routes/driverRoute')
+const serviceRouter = require('./routes/serviceRoute')
+const reportRouter = require('./routes/reportRoute')
+const ratingRouter = require('./routes/ratingRoute')
+const bookingRouter = require('./routes/bookingRoute')
+const pricingRouter = require('./routes/pricingRoute')
+const scheduleRouter = require('./routes/scheduleRoute')
+const notificationRouter = require('./routes/notificationRoute')
 const sequelize = require('./config/database');
 const cors = require('cors');
 
@@ -25,6 +32,13 @@ app.get('/', (req, res) => {
 app.use('/api/v1/auth',authRouter)
 app.use('/api/v1/user',userRouter)
 app.use('/api/v1/driver',driverRouter)
+app.use('/api/v1/service',serviceRouter)
+app.use('/api/v1/report',reportRouter)
+app.use('/api/v1/rating',ratingRouter)
+app.use('/api/v1/booking',bookingRouter)
+app.use('/api/v1/pricing',pricingRouter)
+app.use('/api/v1/schedule',scheduleRouter)
+app.use('/api/v1/notification',notificationRouter)
 
 app.use('*', (req, res) => {
     res.status(404).json()
