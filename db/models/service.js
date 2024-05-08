@@ -15,6 +15,10 @@ const Service = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    category: {
+      type: Sequelize.ENUM('taxi','bus'),
+      allowNull: false
+    },
     soloRideOption: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
@@ -36,17 +40,23 @@ const Service = sequelize.define(
       allowNull: false,
     },
     vehiclePictureURL: {
-      type: DataTypes.ARRAYS(DataTypes.STRING),
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
   },
   {
     modelName: "Service",
     tableName: "Services", // Ensure correct table name
-    timestamps: true,
-    underscored: true, // Use underscored naming convention for columns
+    timestamps: true, // Use underscored naming convention for columns
   }
 );
+
+Service.associate = (models) => {
+  Service.belongsTo(models.Driver, {
+    foreignKey: "DriverId",
+    onDelete: "CASCADE",
+  });
+};
 
 module.exports = Service;
 

@@ -18,6 +18,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      category: {
+        type: Sequelize.ENUM('taxi','bus'),
+        allowNull: false
+      },
       soloRideOption: {
         type: Sequelize.BOOLEAN,
         allowNull: false
@@ -39,7 +43,7 @@ module.exports = {
         allowNull: false
       },
       vehiclePictureURL: {
-        type: DataTypes.ARRAYS(DataTypes.STRING),
+        type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: true,
       },
       createdAt: {

@@ -58,6 +58,10 @@ const Driver = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    averageRating: {
+      type: Sequelize.FLOAT,
+      defaultValue: 0
+    },
     isApproved: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
@@ -71,6 +75,7 @@ const Driver = sequelize.define(
 );
 
 Driver.associate = function (models) {
+  Driver.hasMany(models.Service, { foreignKey: "DriverId", onDelete: "CASCADE" });
   Driver.belongsTo(models.User, { foreignKey: "UserId", onDelete: "CASCADE" });
 };
 
