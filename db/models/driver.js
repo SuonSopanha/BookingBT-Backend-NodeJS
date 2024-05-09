@@ -76,6 +76,8 @@ const Driver = sequelize.define(
 
 Driver.associate = function (models) {
   Driver.hasMany(models.Service, { foreignKey: "DriverId", onDelete: "CASCADE" });
+  Driver.hasMany(models.Booking, { foreignKey: "DriverID", onDelete: "CASCADE" });
+  Driver.hasMany(models.Notification, { foreignKey: "DriverId", onDelete: "CASCADE" });
   Driver.belongsTo(models.User, { foreignKey: "UserId", onDelete: "CASCADE" });
 };
 

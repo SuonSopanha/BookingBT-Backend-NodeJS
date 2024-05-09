@@ -75,9 +75,6 @@ async function updateNotification(req, res) {
   try {
     const { id } = req.params;
     const {
-      UserId,
-      DriverId,
-      BookingId,
       notificationType,
       notificationMessage,
       notificationStatus,
@@ -94,9 +91,6 @@ async function updateNotification(req, res) {
 
     // Update notification information
     notification = await notification.update({
-      UserId,
-      DriverId,
-      BookingId,
       notificationType,
       notificationMessage,
       notificationStatus,
