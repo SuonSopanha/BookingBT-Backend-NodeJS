@@ -94,6 +94,7 @@ Booking.associate = (models) => {
   Booking.belongsTo(models.User, { foreignKey: 'UserID', onDelete: 'CASCADE' });
   Booking.belongsTo(models.Service, { foreignKey: 'ServiceID', onDelete: 'CASCADE' });
   Booking.belongsTo(models.Driver, { foreignKey: 'DriverID', onDelete: 'CASCADE' });
+  Booking.hasMany(models.Notifiaction, { foreignKey: 'BookingId', onDelete: 'CASCADE' });
 }
 
 module.exports = Booking;

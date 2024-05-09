@@ -92,6 +92,7 @@ const User = sequelize.define(
 User.assosiations = (Driver) => {
   User.hasMany(Driver,{ foreignKey: 'UserId', sourceKey: 'id' });
   User.hasMany(Booking,{ foreignKey:'UserID',sourceKey:'id'})
+  User.hasMany(Notification,{ foreignKey:'UserId',sourceKey:'id'})
 };
 
 

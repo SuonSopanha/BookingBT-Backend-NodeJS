@@ -52,9 +52,14 @@ const Notification = sequelize.define(
     modelName: "Notification",
     tableName: "Notifications",
     timestamps: true,
-    underscored: true,
   }
 );
+
+Notification.associate = (models) => {
+  Notification.belongsTo(models.User, { foreignKey: "UserId", onDelete: "CASCADE" });
+  Notification.belongsTo(models.Driver, { foreignKey: "DriverId", onDelete: "CASCADE" });
+  Notification.belongsTo(models.Booking, { foreignKey: "BookingId", onDelete: "CASCADE" });
+};
 
 module.exports = Notification;
 
