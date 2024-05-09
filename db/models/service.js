@@ -56,6 +56,18 @@ Service.associate = (models) => {
     foreignKey: "DriverId",
     onDelete: "CASCADE",
   });
+  Service.hasMany(models.Booking, {
+    foreignKey: "ServiceID",
+    onDelete: "CASCADE",
+  });
+  Service.hasMany(models.Pricing, {
+    foreignKey: "ServiceID",
+    onDelete: "CASCADE",
+  });
+  Service.hasMany(models.Schedule, {
+    foreignKey: "ServiceID",
+    onDelete: "CASCADE",
+  });
 };
 
 module.exports = Service;

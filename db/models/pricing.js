@@ -37,9 +37,12 @@ const Pricing = sequelize.define(
     modelName: "Pricing",
     tableName: "Pricings",
     timestamps: true,
-    underscored: true,
   }
 );
+
+Pricing.associate = (models) => {
+  Pricing.belongsTo(models.Service, { foreignKey: "ServiceID", onDelete: "CASCADE" });
+};
 
 module.exports = Pricing;
 

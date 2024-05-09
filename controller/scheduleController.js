@@ -63,7 +63,7 @@ async function getScheduleById(req, res) {
 async function updateSchedule(req, res) {
   try {
     const { id } = req.params;
-    const { ServiceID, dayOfWeek, departureTime, arrivalTime } = req.body;
+    const { dayOfWeek, departureTime, arrivalTime } = req.body;
 
     // Find the schedule by ID
     let schedule = await Schedule.findByPk(id);
@@ -75,10 +75,9 @@ async function updateSchedule(req, res) {
 
     // Update schedule information
     schedule = await schedule.update({
-      ServiceID,
-      dayOfWeek,
-      departureTime,
-      arrivalTime,
+      dayOfWeek: dayOfWeek || schedule.dayOfWeek,
+      departureTime: departureTime || schedule.departureTime,
+      arrivalTime: arrivalTime || schedule.arrivalTime
     });
 
     // Return success response

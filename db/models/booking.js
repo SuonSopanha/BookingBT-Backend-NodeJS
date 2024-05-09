@@ -88,9 +88,13 @@ const Booking = sequelize.define('Booking', {
   modelName : 'Booking',
   tableName : 'Bookings',
   timestamps : true,
-  underscored : true
 });
 
+Booking.associate = (models) => {
+  Booking.belongsTo(models.User, { foreignKey: 'UserID', onDelete: 'CASCADE' });
+  Booking.belongsTo(models.Service, { foreignKey: 'ServiceID', onDelete: 'CASCADE' });
+  Booking.belongsTo(models.Driver, { foreignKey: 'DriverID', onDelete: 'CASCADE' });
+}
 
 module.exports = Booking;
 

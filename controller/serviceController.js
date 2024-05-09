@@ -154,7 +154,7 @@ async function updateService(req, res) {
   }
 }
 
-// Function to delete a service by ID
+
 // Function to delete a service by ID
 async function deleteService(req, res) {
   try {
