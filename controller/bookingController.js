@@ -1,12 +1,10 @@
 const Booking  = require('../db/models/booking');
-
+const Service = require('../db/models/service');
 // Function to create a booking
 async function createBooking(req, res) {
   try {
     const {
-      UserID,
       ServiceID,
-      DriverID,
       pickupLocation,
       dropoffLocation,
       pickupTime,
@@ -19,11 +17,23 @@ async function createBooking(req, res) {
       totalFare
     } = req.body;
 
+    const userId = req.user.id;
+    //find Service by ServiceID
+
+    const service = await Service.findByPk(ServiceID);
+
+    if(!service) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+
+    const driverID = service.DriverId;
+
+
     // Create the booking
     const booking = await Booking.create({
-      UserID,
-      ServiceID,
-      DriverID,
+      UserID: userId,
+      ServiceID: ServiceID,
+      DriverID:driverID,
       pickupLocation,
       dropoffLocation,
       pickupTime,
@@ -85,11 +95,10 @@ async function getBookingById(req, res) {
 // Function to update a booking by ID
 async function updateBooking(req, res) {
   try {
-    const { id } = req.params;
+    const params = req.params.id;
+    const id = parseInt(params);
+
     const {
-      UserID,
-      ServiceID,
-      DriverID,
       pickupLocation,
       dropoffLocation,
       pickupTime,
@@ -112,9 +121,6 @@ async function updateBooking(req, res) {
 
     // Update booking information
     booking = await booking.update({
-      UserID,
-      ServiceID,
-      DriverID,
       pickupLocation,
       dropoffLocation,
       pickupTime,

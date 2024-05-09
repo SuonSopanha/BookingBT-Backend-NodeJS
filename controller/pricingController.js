@@ -64,7 +64,7 @@ async function getPricingById(req, res) {
 async function updatePricing(req, res) {
   try {
     const { id } = req.params;
-    const { ServiceID, baseFare, additionalCharge, soloCharge, description } = req.body;
+    const { baseFare, additionalCharge, soloCharge, description } = req.body;
 
     // Find the pricing by ID
     let pricing = await Pricing.findByPk(id);
@@ -76,7 +76,6 @@ async function updatePricing(req, res) {
 
     // Update pricing information
     pricing = await pricing.update({
-      ServiceID,
       baseFare,
       additionalCharge,
       soloCharge,

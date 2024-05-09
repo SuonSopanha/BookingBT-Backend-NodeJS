@@ -41,9 +41,15 @@ const Schedule = sequelize.define(
     modelName: "Schedule",
     tableName: "Schedules",
     timestamps: true,
-    underscored: true,
   }
 );
+
+Schedule.associate = (models) => {
+  Schedule.belongsTo(models.Service, {
+    foreignKey: "ServiceID",
+    onDelete: "CASCADE",
+  });
+};
 
 module.exports = Schedule;
 
