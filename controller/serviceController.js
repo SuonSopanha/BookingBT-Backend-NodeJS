@@ -50,9 +50,6 @@ async function getAllServices(req, res) {
     if (!driver) {
       return res.status(404).json({ error: "Driver not found" });
     }
-
-    // Get userId from JWT token
-
     // Find all services for the user
     const services = await Service.findAll({ where: { DriverId: driver.id } });
 
@@ -154,7 +151,6 @@ async function updateService(req, res) {
   }
 }
 
-
 // Function to delete a service by ID
 async function deleteService(req, res) {
   try {
@@ -196,10 +192,36 @@ async function deleteService(req, res) {
   }
 }
 
+async function displayAllServices(req, res) {
+  try {
+    const services = await Service.findAll();
+    res.json(services);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+async function servicesDetails(req, res) {
+  try {
+    const { id } = req.params;
+
+    const services = await Service.findAll({
+      where: { id: id },
+    });
+    res.json(services);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   createService,
   getAllServices,
   getServiceById,
   updateService,
   deleteService,
+  displayAllServices,
+  servicesDetails,
 };
