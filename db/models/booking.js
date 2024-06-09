@@ -93,7 +93,7 @@ const Booking = sequelize.define('Booking', {
 Booking.associate = (models) => {
   Booking.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'CASCADE' });
   Booking.belongsTo(models.Service, { foreignKey: 'serviceId', onDelete: 'CASCADE' });
-  Booking.belongsTo(models.Driver, { foreignKey: 'driverID', onDelete: 'CASCADE' });
+  Booking.belongsTo(models.Driver, { foreignKey: 'driverId', onDelete: 'CASCADE' });
   Booking.hasMany(models.Notifiaction, { foreignKey: 'bookingId', onDelete: 'CASCADE' });
 }
 

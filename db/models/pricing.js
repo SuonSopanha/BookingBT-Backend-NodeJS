@@ -12,7 +12,7 @@ const Pricing = sequelize.define(
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    serviceID: {
+    serviceId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
