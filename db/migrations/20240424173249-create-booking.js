@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      UserID: {
+      userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -18,7 +18,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      ServiceID: {
+      serviceId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -28,7 +28,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      DriverID: {
+      driverId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -78,7 +78,8 @@ module.exports = {
           'middle',
           'back',
           'window',
-          'aisle'
+          'aisle',
+          "anywhere"
         ),
         allowNull: true
       },

@@ -46,14 +46,6 @@ module.exports = {
         allowNull: false,
         defaultValue: 'user'
       },
-      authToken: {
-        type: Sequelize.STRING,
-        defaultValue: "",
-      },
-      emailVerificationToken: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       isEmailVerified: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,

@@ -63,14 +63,6 @@ const User = sequelize.define(
       type: Sequelize.STRING,
       allowNull:true
     },
-    authToken: {
-      type: DataTypes.STRING,
-      defaultValue: '',
-    },
-    emailVerificationToken: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     isEmailVerified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -90,9 +82,9 @@ const User = sequelize.define(
 
 // Define associations
 User.assosiations = (Driver) => {
-  User.hasMany(Driver,{ foreignKey: 'UserId', sourceKey: 'id' });
-  User.hasMany(Booking,{ foreignKey:'UserID',sourceKey:'id'})
-  User.hasMany(Notification,{ foreignKey:'UserId',sourceKey:'id'})
+  User.hasMany(Driver,{ foreignKey: 'userId', sourceKey: 'id' });
+  User.hasMany(Booking,{ foreignKey:'userId',sourceKey:'id'})
+  User.hasMany(Notification,{ foreignKey:'userId',sourceKey:'id'})
 };
 
 

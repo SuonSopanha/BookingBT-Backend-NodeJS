@@ -8,9 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      UserId: {
+      userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Users',
           key: 'id'
@@ -18,9 +18,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      DriverId: {
+      driverId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Drivers',
           key: 'id'
@@ -28,9 +28,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      BookingId: {
+      bookingId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Bookings',
           key: 'id'
@@ -45,7 +45,19 @@ module.exports = {
           'ride_canceled',
           'ride_completed',
           'driver_arrival',
+          'driver_on_the_way',
+          'ride_scheduled',
+          'account_created',
+          'account_updated',
+          'password_changed',
+          'account_suspended',
+          'account_activated',
           'emergency',
+          'safety_tips',
+          'system_update',
+          'system_alert',
+          'request_feedback',
+          'new_review',
           'other'
         ),
         allowNull: false

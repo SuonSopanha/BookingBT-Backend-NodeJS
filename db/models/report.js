@@ -11,17 +11,17 @@ const Report = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    UserId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    DriverId: {
+    driverId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
-    ServiceId: {
+    serviceId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     reportType: {
       type: Sequelize.ENUM(
@@ -53,59 +53,17 @@ const Report = sequelize.define(
   }
 );
 
+Report.associate = (models) => {
+  Report.belongsTo(models.User, {
+    foreignKey: "userId",
+    onDelete: "CASCADE",
+  });
+  Report.belongsTo(models.Driver, {
+    foreignKey: "driverId",
+    onDelete: "CASCADE",
+  });
+};
+
+
+
 module.exports = Report;
-
-//-----------------------------------------------------
-
-// module.exports = (sequelize, DataTypes) => {
-//   class Report extends Model {
-//     static associate(models) {
-//       // Define associations here if needed
-//       Report.belongsTo(models.User, { foreignKey: 'UserId', onDelete: 'CASCADE' });
-//       Report.belongsTo(models.Driver, { foreignKey: 'DriverId', onDelete: 'CASCADE' });
-//       Report.belongsTo(models.Service, { foreignKey: 'ServiceId', onDelete: 'CASCADE' });
-//     }
-//   };
-//   Report.init({
-//     UserId: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false
-//     },
-//     DriverId: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false
-//     },
-//     ServiceId: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false
-//     },
-//     reportType: {
-//       type: Sequelize.ENUM(
-//         'price',
-//         'hygiene',
-//         'convenience',
-//         'driver_behavior',
-//         'vehicle_condition',
-//         'safety',
-//         'service_quality',
-//         'other'
-//       ),
-//       allowNull: false
-//     },
-//     reportContent: {
-//       type: DataTypes.STRING,
-//       allowNull: true
-//     },
-//     reportDate: {
-//       type: DataTypes.DATE,
-//       allowNull: false
-//     }
-//   }, {
-//     sequelize,
-//     modelName: 'Report',
-//     tableName: 'Reports',
-//     timestamps: true,
-//     underscored: true
-//   });
-//   return Report;
-// };

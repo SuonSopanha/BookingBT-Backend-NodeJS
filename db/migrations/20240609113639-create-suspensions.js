@@ -1,7 +1,8 @@
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Reports', {
+    await queryInterface.createTable('Suspensions', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,9 +11,9 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
-          model: 'Users',
+          model: 'Users', // Assumes Users table exists
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -22,54 +23,43 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'Drivers',
+          model: 'Drivers', // Assumes Drivers table exists
           key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      serviceId: {
+      suspensionLevel: {
         type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'Services',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      reportType: {
-        type: Sequelize.ENUM(
-          'price', 
-          'hygiene', 
-          'convenience', 
-          'driver_behavior',
-          'vehicle_condition',
-          'safety',
-          'service_quality',
-          'other'
-        ),
         allowNull: false
       },
-      reportContent: {
-        type: Sequelize.STRING,
+      reason: {
+        type: Sequelize.TEXT,
         allowNull: true
       },
-      reportDate: {
+      startDate: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      endDate: {
+        type: Sequelize.DATE,
+        allowNull: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Reports');
+    await queryInterface.dropTable('Suspensions');
   }
 };

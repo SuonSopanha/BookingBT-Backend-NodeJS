@@ -11,7 +11,7 @@ const Service = sequelize.define(
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    DriverId: {
+    driverId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -53,19 +53,19 @@ const Service = sequelize.define(
 
 Service.associate = (models) => {
   Service.belongsTo(models.Driver, {
-    foreignKey: "DriverId",
+    foreignKey: "driverId",
     onDelete: "CASCADE",
   });
   Service.hasMany(models.Booking, {
-    foreignKey: "ServiceID",
+    foreignKey: "derviceId",
     onDelete: "CASCADE",
   });
   Service.hasMany(models.Pricing, {
-    foreignKey: "ServiceID",
+    foreignKey: "serviceId",
     onDelete: "CASCADE",
   });
   Service.hasMany(models.Schedule, {
-    foreignKey: "ServiceID",
+    foreignKey: "serviceId",
     onDelete: "CASCADE",
   });
 };
@@ -74,7 +74,7 @@ module.exports = Service;
 
 
 
-//-------------------------------------------
+
 
 // module.exports = (sequelize, DataTypes) => {
 //   class Service extends Model {
