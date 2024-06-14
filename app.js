@@ -12,8 +12,11 @@ const bookingRouter = require('./routes/bookingRoute')
 const pricingRouter = require('./routes/pricingRoute')
 const scheduleRouter = require('./routes/scheduleRoute')
 const notificationRouter = require('./routes/notificationRoute')
+const customRouter = require('./routes/customRoute')
 const sequelize = require('./config/database');
 const cors = require('cors');
+
+const {  getTopDrivers} = require('./controller/driverController');
 
 const app = express();
 
@@ -24,10 +27,7 @@ app.use(cors({
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.status(200).json({
-        message: 'Hello World',
-
-    });
+    res.send("<h1>Welcome</h1>");
 });
 
 app.use('/api/v1/auth',authRouter)
@@ -41,6 +41,9 @@ app.use('/api/v1/pricing',pricingRouter)
 app.use('/api/v1/schedule',scheduleRouter)
 app.use('/api/v1/notification',notificationRouter)
 app.use('/api/v1/driverService',driverServiceRouter)
+
+app.use('/api/v1/',customRouter)
+
 
 app.use('*', (req, res) => {
     res.status(404).json()

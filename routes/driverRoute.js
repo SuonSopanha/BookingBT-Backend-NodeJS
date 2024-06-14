@@ -6,7 +6,9 @@ const {
   getDriverById,
   updateDriver,
   deleteDriver,
+  getTopDrivers
 } = require("../controller/driverController");
+const { route } = require("./authRoute");
 
 const router = express.Router();
 

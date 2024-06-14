@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      serviceID: {
+      serviceId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -33,6 +33,10 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
         allowNull: true
+      },
+      currencyType: {
+        type: Sequelize.ENUM("USD", "KHR"),
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

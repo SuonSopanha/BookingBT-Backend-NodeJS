@@ -3,15 +3,16 @@ const Pricing = require('../db/models/pricing');
 // Function to create a pricing
 async function createPricing(req, res) {
   try {
-    const { ServiceID, baseFare, additionalCharge, soloCharge, description } = req.body;
+    const { serviceId, baseFare, additionalCharge, soloCharge, description,currencyType } = req.body;
 
     // Create the pricing
     const pricing = await Pricing.create({
-      ServiceID,
+      serviceId,
       baseFare,
       additionalCharge,
       soloCharge,
       description,
+      currencyType
     });
 
     // Return success response

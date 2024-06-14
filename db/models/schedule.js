@@ -12,7 +12,7 @@ const Schedule = sequelize.define(
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    serviceID: {
+    serviceId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

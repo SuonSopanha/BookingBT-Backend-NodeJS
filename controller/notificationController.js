@@ -1,50 +1,63 @@
-const Notification = require('../db/models/notification');
+const Notification = require("../db/models/notification");
+const Driver = require("../db/models/driver");
 
 // Function to create a notification
 async function createNotification(req, res) {
   try {
     const {
-      UserId,
-      DriverId,
-      BookingId,
+      driverId,
+      bookingId,
       notificationType,
       notificationMessage,
       notificationStatus,
-      notificationDate
+      notificationDate,
     } = req.body;
-
+    const userId = req.user.id;
     // Create the notification
     const notification = await Notification.create({
-      UserId,
-      DriverId,
-      BookingId,
+      userId,
+      driverId,
+      bookingId,
       notificationType,
       notificationMessage,
       notificationStatus,
-      notificationDate
+      notificationDate,
     });
 
     // Return success response
-    res.status(201).json({ message: 'Notification created successfully', notification });
+    res
+      .status(201)
+      .json({ message: "Notification created successfully", notification });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
 // Function to get all notifications
 async function getAllNotifications(req, res) {
   try {
-    // Find all notifications
-    const notifications = await Notification.findAll();
+    const userId = req.user.id;
+
+    // Find the user in the Driver table using userId
+    const driver = await Driver.findOne({ where: { userId } });
+
+    if (driver) {
+      const driverNotifications = await Notification.findAll({
+        where: { driverId: driver.id },
+      });
+      res.json(driverNotifications);
+    } else {
+      const notifications = await Notification.findAll({ where: { userId } });
+      req.json(notifications);
+    }
 
     // Return notifications
-    res.json(notifications);
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -58,7 +71,7 @@ async function getNotificationById(req, res) {
 
     // If notification not found
     if (!notification) {
-      return res.status(404).json({ error: 'Notification not found' });
+      return res.status(404).json({ error: "Notification not found" });
     }
 
     // Return notification
@@ -66,7 +79,7 @@ async function getNotificationById(req, res) {
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -78,7 +91,7 @@ async function updateNotification(req, res) {
       notificationType,
       notificationMessage,
       notificationStatus,
-      notificationDate
+      notificationDate,
     } = req.body;
 
     // Find the notification by ID
@@ -86,7 +99,7 @@ async function updateNotification(req, res) {
 
     // If notification not found
     if (!notification) {
-      return res.status(404).json({ error: 'Notification not found' });
+      return res.status(404).json({ error: "Notification not found" });
     }
 
     // Update notification information
@@ -94,15 +107,15 @@ async function updateNotification(req, res) {
       notificationType,
       notificationMessage,
       notificationStatus,
-      notificationDate
+      notificationDate,
     });
 
     // Return success response
-    res.json({ message: 'Notification updated successfully', notification });
+    res.json({ message: "Notification updated successfully", notification });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -116,19 +129,25 @@ async function deleteNotification(req, res) {
 
     // If notification not found
     if (!notification) {
-      return res.status(404).json({ error: 'Notification not found' });
+      return res.status(404).json({ error: "Notification not found" });
     }
 
     // Delete notification
     await notification.destroy();
 
     // Return success response
-    res.json({ message: 'Notification deleted successfully' });
+    res.json({ message: "Notification deleted successfully" });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-module.exports = { createNotification, getAllNotifications, getNotificationById, updateNotification, deleteNotification };
+module.exports = {
+  createNotification,
+  getAllNotifications,
+  getNotificationById,
+  updateNotification,
+  deleteNotification,
+};

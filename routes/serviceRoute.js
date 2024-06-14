@@ -9,8 +9,8 @@ const router = express.Router();
 
 // Routes
 router.post('/',authenticateToken, createService); // Create a new service
-router.get('/',authenticateToken, displayAllServices); // Get all services for the authenticated user
-router.get('/:id',authenticateToken,servicesDetails ); // Get a single service by ID for the authenticated user
+router.get('/', getAllServices); // Get all services for the authenticated user
+router.get('/:id',getServiceById ); // Get a single service by ID for the authenticated user
 router.put('/:id',authenticateToken, updateService); // Update a service by ID for the authenticated user
 router.delete('/:id',authenticateToken, deleteService); // Delete a service by ID for the authenticated user
 

@@ -3,11 +3,11 @@ const Schedule = require('../db/models/schedule');
 // Function to create a schedule
 async function createSchedule(req, res) {
   try {
-    const { ServiceID, dayOfWeek, departureTime, arrivalTime } = req.body;
+    const { serviceId, dayOfWeek, departureTime, arrivalTime } = req.body;
 
     // Create the schedule
     const schedule = await Schedule.create({
-      ServiceID,
+      serviceId,
       dayOfWeek,
       departureTime,
       arrivalTime,

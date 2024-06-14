@@ -47,12 +47,12 @@ module.exports = {
         allowNull: false
       },
       pickupTime: {
-        type: Sequelize.DATE,
+        type: Sequelize.TIME,
         allowNull: false
       },
       dropoffTime: {
-        type: Sequelize.DATE,
-        allowNull: false
+        type: Sequelize.TIME,
+        allowNull: true,
       },
       bookingDate: {
         type: Sequelize.DATE,
@@ -72,6 +72,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       seatType: {
         type: Sequelize.ENUM(
           'front',
@@ -88,7 +92,7 @@ module.exports = {
         allowNull: true
       },
       totalFare: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
