@@ -8,7 +8,7 @@ async function createDriver(req, res) {
 
     // Create the driver with UserId
     const driver = await Driver.create({
-      UserId: userId,
+      userId: userId,
       firstName,
       lastName,
       gender,
@@ -32,7 +32,7 @@ async function createDriver(req, res) {
 async function getAllDrivers(req, res) {
   try {
     // Find all drivers associated with the UserId
-    const drivers = await Driver.findAll({ where: { UserId: req.user.id } });
+    const drivers = await Driver.findAll();
 
     // Return drivers
     res.json(drivers);
@@ -42,6 +42,24 @@ async function getAllDrivers(req, res) {
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+async function getTopDrivers(req, res) {
+  try {
+    // Find top 5 drivers with the highest rating
+    const topDrivers = await Driver.findAll({
+      limit: 5,
+      order: [['averageRating', 'DESC']],
+    });
+
+    // Return top drivers
+    res.json(topDrivers);
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 
 // Function to get a single driver by ID
 async function getDriverById(req, res) {
@@ -124,4 +142,4 @@ async function deleteDriver(req, res) {
   }
 }
 
-module.exports = { createDriver, getAllDrivers, getDriverById, updateDriver, deleteDriver };
+module.exports = { createDriver, getAllDrivers, getDriverById, updateDriver, deleteDriver ,getTopDrivers};

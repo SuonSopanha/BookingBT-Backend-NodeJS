@@ -36,12 +36,12 @@ const Booking = sequelize.define('Booking', {
       allowNull: false
     },
     pickupTime: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
       allowNull: false
     },
     dropoffTime: {
-      type: DataTypes.DATE,
-      allowNull: false
+      type: DataTypes.TIME,
+      allowNull: true
     },
     bookingStatus: {
       type: Sequelize.ENUM(
@@ -71,6 +71,11 @@ const Booking = sequelize.define('Booking', {
       type: DataTypes.STRING,
       allowNull: false
     },
+
+    description: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
     seatType: {
       type: DataTypes.STRING,
       allowNull: true
@@ -80,7 +85,7 @@ const Booking = sequelize.define('Booking', {
       allowNull: true
     },
     totalFare: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       allowNull: false
     }
 

@@ -34,6 +34,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
+      currencyType: {
+        type: Sequelize.ENUM("USD", "KHR"),
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

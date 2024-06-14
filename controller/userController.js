@@ -1,5 +1,24 @@
 const User = require('../db/models/user');
 
+async function getUser(req,res){
+  try{
+    const userId = req.user.id;
+
+    const user = await User.findByPk(userId);
+
+    if(!user){
+      return res.status(404).json({error: 'User not found'});
+    }
+
+    res.json({user});
+  } catch (err) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+
+  }
+
+}
+
 // Function to allow user to add additional information
 async function addInfo(req, res) {
   try {
@@ -67,4 +86,4 @@ async function editUser(req, res) {
   }
 }
 
-module.exports = { addInfo, editUser };
+module.exports = { addInfo, editUser,getUser };

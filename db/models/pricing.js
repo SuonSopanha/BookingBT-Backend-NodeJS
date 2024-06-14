@@ -28,6 +28,10 @@ const Pricing = sequelize.define(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    currencyType: {
+      type: Sequelize.ENUM("KHR", "USD"),
+      allowNull: false
+    },
     description: {
       type: DataTypes.STRING,
       allowNull: true,
