@@ -17,7 +17,7 @@ const Notification = sequelize.define(
     },
     driverId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     bookingId: {
       type: DataTypes.INTEGER,
