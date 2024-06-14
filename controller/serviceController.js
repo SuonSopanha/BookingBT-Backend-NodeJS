@@ -318,6 +318,22 @@ async function servicesDetails(req, res) {
   }
 }
 
+
+async function getMyServices(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const driver = await Driver.findOne({ where: { userId: userId } });
+    const services = await Service.findAll({
+      where: { driverId: driver.id},
+    });
+    res.json(services);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   createService,
   getAllServices,
@@ -326,4 +342,5 @@ module.exports = {
   deleteService,
   displayAllServices,
   servicesDetails,
+  getMyServices
 };

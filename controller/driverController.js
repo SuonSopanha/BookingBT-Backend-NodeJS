@@ -1,10 +1,19 @@
-const  Driver = require("../db/models/driver");
+const Driver = require("../db/models/driver");
 
 // Function to create a new driver
 async function createDriver(req, res) {
   try {
-    const  userId  = req.user.id; // Get userId from request object
-    const { firstName, lastName, gender, dateOfBirth, photoURL, contactNumber, email, address } = req.body;
+    const userId = req.user.id; // Get userId from request object
+    const {
+      firstName,
+      lastName,
+      gender,
+      dateOfBirth,
+      photoURL,
+      contactNumber,
+      email,
+      address,
+    } = req.body;
 
     // Create the driver with UserId
     const driver = await Driver.create({
@@ -20,11 +29,11 @@ async function createDriver(req, res) {
     });
 
     // Return success response
-    res.status(201).json({ message: 'Driver created successfully', driver });
+    res.status(201).json({ message: "Driver created successfully", driver });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -39,7 +48,7 @@ async function getAllDrivers(req, res) {
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -48,7 +57,7 @@ async function getTopDrivers(req, res) {
     // Find top 5 drivers with the highest rating
     const topDrivers = await Driver.findAll({
       limit: 5,
-      order: [['averageRating', 'DESC']],
+      order: [["averageRating", "DESC"]],
     });
 
     // Return top drivers
@@ -56,21 +65,20 @@ async function getTopDrivers(req, res) {
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
-
 
 // Function to get a single driver by ID
 async function getDriverById(req, res) {
   try {
     const { id } = req.params;
     // Find driver by ID associated with the UserId
-    const driver = await Driver.findOne({ where: { id , UserId: req.user.id} });
+    const driver = await Driver.findOne({ where: { id, UserId: req.user.id } });
 
     // If driver not found
     if (!driver) {
-      return res.status(404).json({ error: 'Driver not found' });
+      return res.status(404).json({ error: "Driver not found" });
     }
 
     // Return driver
@@ -78,7 +86,7 @@ async function getDriverById(req, res) {
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -86,14 +94,23 @@ async function getDriverById(req, res) {
 async function updateDriver(req, res) {
   try {
     const { id } = req.params;
-    const { firstName, lastName, gender, dateOfBirth, photoURL, contactNumber, email, address } = req.body;
+    const {
+      firstName,
+      lastName,
+      gender,
+      dateOfBirth,
+      photoURL,
+      contactNumber,
+      email,
+      address,
+    } = req.body;
 
     // Find driver by ID associated with the UserId
     let driver = await Driver.findOne({ where: { id, UserId: req.user.id } });
 
     // If driver not found
     if (!driver) {
-      return res.status(404).json({ error: 'Driver not found' });
+      return res.status(404).json({ error: "Driver not found" });
     }
 
     // Update driver information
@@ -109,11 +126,11 @@ async function updateDriver(req, res) {
     });
 
     // Return success response
-    res.json({ message: 'Driver updated successfully', driver });
+    res.json({ message: "Driver updated successfully", driver });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -127,19 +144,44 @@ async function deleteDriver(req, res) {
 
     // If driver not found
     if (!driver) {
-      return res.status(404).json({ error: 'Driver not found' });
+      return res.status(404).json({ error: "Driver not found" });
     }
 
     // Delete driver
     await driver.destroy();
 
     // Return success response
-    res.json({ message: 'Driver deleted successfully' });
+    res.json({ message: "Driver deleted successfully" });
   } catch (error) {
     // Handle errors
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-module.exports = { createDriver, getAllDrivers, getDriverById, updateDriver, deleteDriver ,getTopDrivers};
+async function checkDriverRole(req, res, next) {
+  const userId = req.user.id;
+
+  try {
+    const driver = await Driver.findOne({ where: { userId: userId } });
+    if (!driver) {
+      return res.json({ isDriver: false });
+    } else {
+      return res.json({ isDriver: true });
+    }
+  } catch (e) {
+    return res.json({ error: e.message });
+  }
+
+  return;
+}
+
+module.exports = {
+  createDriver,
+  getAllDrivers,
+  getDriverById,
+  updateDriver,
+  deleteDriver,
+  getTopDrivers,
+  checkDriverRole
+};

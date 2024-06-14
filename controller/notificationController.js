@@ -5,6 +5,7 @@ const Driver = require("../db/models/driver");
 async function createNotification(req, res) {
   try {
     const {
+      UserID,
       driverId,
       bookingId,
       notificationType,
@@ -15,7 +16,7 @@ async function createNotification(req, res) {
     const userId = req.user.id;
     // Create the notification
     const notification = await Notification.create({
-      userId,
+      userId : UserID ? UserID : userId,
       driverId,
       bookingId,
       notificationType,
@@ -43,24 +44,27 @@ async function getAllNotifications(req, res) {
     // Find the user in the Driver table using userId
     const driver = await Driver.findOne({ where: { userId } });
 
+    let notifications;
     if (driver) {
-      const driverNotifications = await Notification.findAll({
+      notifications = await Notification.findAll({
         where: { driverId: driver.id },
+        order: [["createdAt", "DESC"]], // Sort notifications in reverse order by creation date
       });
-      res.json(driverNotifications);
     } else {
-      const notifications = await Notification.findAll({ where: { userId } });
-      req.json(notifications);
+      notifications = await Notification.findAll({
+        where: { userId },
+        order: [["createdAt", "DESC"]], // Sort notifications in reverse order by creation date
+      });
     }
 
     // Return notifications
+    res.json(notifications);
   } catch (error) {
     // Handle errors
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 }
-
 // Function to get a single notification by ID
 async function getNotificationById(req, res) {
   try {
