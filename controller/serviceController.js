@@ -3,6 +3,8 @@ const Driver = require("../db/models/driver");
 const Schedule = require("../db/models/schedule");
 const Pricing = require("../db/models/pricing");
 
+const { Op, where } = require("sequelize");
+
 // Function to create a service
 async function createService(req, res) {
   try {
@@ -318,14 +320,13 @@ async function servicesDetails(req, res) {
   }
 }
 
-
 async function getMyServices(req, res) {
   try {
     const userId = req.user.id;
 
     const driver = await Driver.findOne({ where: { userId: userId } });
     const services = await Service.findAll({
-      where: { driverId: driver.id},
+      where: { driverId: driver.id },
     });
     res.json(services);
   } catch (error) {
@@ -333,6 +334,163 @@ async function getMyServices(req, res) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
+
+async function serviceSearch(req, res) {
+  try {
+    const {
+      selectedService,
+      endLocation,
+      startLocation,
+      startDate,
+      startTime,
+
+    } = req.body;
+
+    // Fetch all services from the database
+    let allServices = await Service.findAll({
+      where: selectedService ? { category: selectedService } : {},
+    });
+
+    // Convert fetched services to JSON for in-memory filtering
+    allServices = allServices.map((service) => service.toJSON());
+
+    // Filter services based on endLocation and startLocation
+    const filteredServices = allServices.filter((service) => {
+      const isDestinationMatch = calculateSimilarity(service.destination, endLocation);
+      const isLocationMatch = calculateSimilarity(service.location, startLocation);
+      return isDestinationMatch && isLocationMatch;
+    });
+
+
+    const driverIds = filteredServices.map((service) => service.driverId);
+
+    // Fetch all drivers corresponding to the retrieved driverIds
+    const drivers = await Driver.findAll({
+      where: {
+        id: driverIds,
+      },
+      attributes: [
+        "id",
+        "firstName",
+        "lastName",
+        "contactNumber",
+        "email",
+        "averageRating",
+        "photoURL",
+      ],
+    });
+
+    // Fetch all schedules related to services
+    const schedules = await Schedule.findAll({
+      where: {
+        serviceId: filteredServices.map((service) => service.id),
+      },
+      attributes: [
+        "id",
+        "serviceId",
+        "dayOfWeek",
+        "departureTime",
+        "arrivalTime",
+      ],
+    });
+
+    // Fetch all pricing related to services
+    const pricings = await Pricing.findAll({
+      where: {
+        serviceId: filteredServices.map((service) => service.id),
+      },
+      attributes: [
+        "id",
+        "serviceId",
+        "baseFare",
+        "additionalCharge",
+        "soloCharge",
+        "description",
+        "currencyType",
+      ],
+    });
+
+    // Map through services and attach driver, schedule, and pricing information
+    const servicesWithDetails = filteredServices.map((service) => {
+      const driver = drivers.find((driver) => driver.id === service.driverId);
+      const schedule = schedules.find(
+        (schedule) => schedule.serviceId === service.id
+      );
+      const pricing = pricings.find(
+        (pricing) => pricing.serviceId === service.id
+      );
+
+      return {
+        service,
+        driver,
+        schedule,
+        pricing,
+      };
+    });
+
+
+
+
+
+
+
+
+    res.json(servicesWithDetails);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+function calculateLevenshteinDistance(a, b) {
+  const m = a.length;
+  const n = b.length;
+
+  // Create a 2D array to store distances
+  const dp = Array.from(Array(m + 1), () => Array(n + 1).fill(0));
+
+  // Initialize the first row and column of the dp array
+  for (let i = 0; i <= m; i++) {
+    dp[i][0] = i;
+  }
+  for (let j = 0; j <= n; j++) {
+    dp[0][j] = j;
+  }
+
+  // Populate the dp array
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = Math.min(
+          dp[i - 1][j] + 1, // deletion
+          dp[i][j - 1] + 1, // insertion
+          dp[i - 1][j - 1] + 1 // substitution
+        );
+      }
+    }
+  }
+
+  // Return the Levenshtein distance
+  return dp[m][n];
+}
+
+function calculateSimilarity(a, b) {
+  // Calculate the Levenshtein distance
+  const distance = calculateLevenshteinDistance(a.toLowerCase(), b.toLowerCase());
+
+  // Calculate similarity as a ratio
+  const maxLength = Math.max(a.length, b.length);
+  const similarityRatio = 1 - distance / maxLength;
+
+  // Return true if similarity ratio is greater than 0.5, otherwise false
+  return similarityRatio > 0.5;
+}
+
+
+
+
 
 module.exports = {
   createService,
@@ -342,5 +500,6 @@ module.exports = {
   deleteService,
   displayAllServices,
   servicesDetails,
-  getMyServices
+  getMyServices,
+  serviceSearch,
 };

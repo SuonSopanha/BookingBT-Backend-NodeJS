@@ -2,9 +2,11 @@ const router = require("express").Router();
 
 const authenticateToken = require('../middleware/authenticateToken');
 
-const { getTopDrivers,checkDriverRole } = require("../controller/driverController");
+const { getTopDrivers,checkDriverRole,getUnApprovedDrivers,getDriverDetails } = require("../controller/driverController");
 const {getReciptById,getMyBooking,updateBookingStatus} = require("../controller/bookingController");
-const {getMyServices} = require("../controller/serviceController");
+const {getMyServices,serviceSearch} = require("../controller/serviceController");
+const {getAllUsers} = require("../controller/userController");
+const {getStatistics} = require("../controller/adminController");
 
 router.get("/top-drivers", getTopDrivers);
 router.get("/recipt/:id",getReciptById);
@@ -12,6 +14,11 @@ router.get("/my-booking",authenticateToken,getMyBooking);
 router.put("/booking-status/:id",authenticateToken,updateBookingStatus);
 router.get("/ifDriver",authenticateToken,checkDriverRole);
 router.get("/my-service",authenticateToken,getMyServices);
+router.post("/service-search",serviceSearch);
+router.get("/un-approve",getUnApprovedDrivers);
+router.get("/all-users",getAllUsers);
+router.get("/driver-details/:id",getDriverDetails);
+router.get("/getStatistics",getStatistics);
 
 
 
