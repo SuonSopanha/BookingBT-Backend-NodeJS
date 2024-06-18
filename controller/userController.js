@@ -86,4 +86,20 @@ async function editUser(req, res) {
   }
 }
 
-module.exports = { addInfo, editUser,getUser };
+async function getAllUsers(req, res) {
+  try {
+    // Fetch all users
+    const users = await User.findAll();
+
+    // Send the users as a JSON response
+    res.json(users);
+  } catch (error) {
+    // Log the error
+    console.error(error);
+
+    // Send an error response
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+module.exports = { addInfo, editUser,getUser, getAllUsers };

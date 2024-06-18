@@ -1,4 +1,7 @@
 const Driver = require("../db/models/driver");
+const Service = require("../db/models/service");
+const Schedule = require("../db/models/schedule");
+const Pricing = require("../db/models/pricing");
 
 // Function to create a new driver
 async function createDriver(req, res) {
@@ -176,6 +179,77 @@ async function checkDriverRole(req, res, next) {
   return;
 }
 
+async function getUnApprovedDrivers(req, res) {
+  try {
+    // Fetch unapproved drivers
+    const drivers = await Driver.findAll({ where: { isApproved: false } });
+
+    // Fetch services for each driver
+    const driverWithServices = await Promise.all(
+      drivers.map(async (driver) => {
+        const services = await Service.findAll({
+          where: { driverId: driver.id },
+        });
+        return {
+          ...driver.toJSON(),
+          services,
+        };
+      })
+    );
+
+    res.json(driverWithServices);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+async function getDriverDetails(req, res) {
+  const { id } = req.params;
+  const driverId = parseInt(id);
+  try {
+    // Fetch driver details by ID
+    const driver = await Driver.findByPk(driverId);
+    if (!driver) {
+      return res.status(404).json({ error: 'Driver not found' });
+    }
+
+    // Fetch one of the driver's services
+    const service = await Service.findOne({ where: { driverId: driverId } });
+    if (!service) {
+      return res.status(404).json({ error: 'Service not found for the driver' });
+    }
+
+    // Fetch one schedule using the service ID
+    const schedule = await Schedule.findOne({ where: { serviceId: service.id } });
+    if (!schedule) {
+      return res.status(404).json({ error: 'Schedule not found for the service' });
+    }
+
+    // Fetch one pricing using the service ID
+    const pricing = await Pricing.findOne({ where: { serviceId: service.id } });
+    if (!pricing) {
+      return res.status(404).json({ error: 'Pricing not found for the service' });
+    }
+
+    // Combine results
+    const result = {
+      driver: driver.toJSON(),
+      service: service.toJSON(),
+      schedule: schedule.toJSON(),
+      pricing: pricing.toJSON()
+    };
+
+    // Send the combined result as a JSON response
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   createDriver,
   getAllDrivers,
@@ -183,5 +257,7 @@ module.exports = {
   updateDriver,
   deleteDriver,
   getTopDrivers,
-  checkDriverRole
+  checkDriverRole,
+  getUnApprovedDrivers,
+  getDriverDetails,
 };
