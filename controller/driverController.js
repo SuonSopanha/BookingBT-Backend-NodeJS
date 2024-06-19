@@ -2,6 +2,7 @@ const Driver = require("../db/models/driver");
 const Service = require("../db/models/service");
 const Schedule = require("../db/models/schedule");
 const Pricing = require("../db/models/pricing");
+const User = require("../db/models/user");
 
 // Function to create a new driver
 async function createDriver(req, res) {
@@ -77,7 +78,7 @@ async function getDriverById(req, res) {
   try {
     const { id } = req.params;
     // Find driver by ID associated with the UserId
-    const driver = await Driver.findOne({ where: { id, UserId: req.user.id } });
+    const driver = await Driver.findOne({ where: { id } });
 
     // If driver not found
     if (!driver) {
@@ -141,9 +142,14 @@ async function updateDriver(req, res) {
 async function deleteDriver(req, res) {
   try {
     const { id } = req.params;
+    const user = await User.findByPk(req.user.id);
+
+    if (user.role !== "admin") {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
 
     // Find driver by ID associated with the UserId
-    const driver = await Driver.findOne({ where: { id, UserId: req.user.id } });
+    const driver = await Driver.findOne({ where: { id } });
 
     // If driver not found
     if (!driver) {
@@ -170,7 +176,7 @@ async function checkDriverRole(req, res, next) {
     if (!driver) {
       return res.json({ isDriver: false });
     } else {
-      return res.json({ isDriver: true });
+      return res.json({ isDriver: true , driver: driver });
     }
   } catch (e) {
     return res.json({ error: e.message });
@@ -204,8 +210,6 @@ async function getUnApprovedDrivers(req, res) {
   }
 }
 
-
-
 async function getDriverDetails(req, res) {
   const { id } = req.params;
   const driverId = parseInt(id);
@@ -213,25 +217,33 @@ async function getDriverDetails(req, res) {
     // Fetch driver details by ID
     const driver = await Driver.findByPk(driverId);
     if (!driver) {
-      return res.status(404).json({ error: 'Driver not found' });
+      return res.status(404).json({ error: "Driver not found" });
     }
 
     // Fetch one of the driver's services
     const service = await Service.findOne({ where: { driverId: driverId } });
     if (!service) {
-      return res.status(404).json({ error: 'Service not found for the driver' });
+      return res
+        .status(404)
+        .json({ error: "Service not found for the driver" });
     }
 
     // Fetch one schedule using the service ID
-    const schedule = await Schedule.findOne({ where: { serviceId: service.id } });
+    const schedule = await Schedule.findOne({
+      where: { serviceId: service.id },
+    });
     if (!schedule) {
-      return res.status(404).json({ error: 'Schedule not found for the service' });
+      return res
+        .status(404)
+        .json({ error: "Schedule not found for the service" });
     }
 
     // Fetch one pricing using the service ID
     const pricing = await Pricing.findOne({ where: { serviceId: service.id } });
     if (!pricing) {
-      return res.status(404).json({ error: 'Pricing not found for the service' });
+      return res
+        .status(404)
+        .json({ error: "Pricing not found for the service" });
     }
 
     // Combine results
@@ -239,12 +251,38 @@ async function getDriverDetails(req, res) {
       driver: driver.toJSON(),
       service: service.toJSON(),
       schedule: schedule.toJSON(),
-      pricing: pricing.toJSON()
+      pricing: pricing.toJSON(),
     };
 
     // Send the combined result as a JSON response
     res.json(result);
   } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+async function approveDriver(req, res) {
+  try {
+    const { id } = req.params;
+
+    // Find driver by ID associated with the UserId
+    let driver = await Driver.findOne({ where: { id } });
+
+    // If driver not found
+    if (!driver) {
+      return res.status(404).json({ error: "Driver not found" });
+    }
+
+    // Update driver information
+    driver = await driver.update({
+      isApproved: true,
+    });
+
+    // Return success response
+    res.json({ message: "Driver updated successfully", driver });
+  } catch (error) {
+    // Handle errors
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -260,4 +298,5 @@ module.exports = {
   checkDriverRole,
   getUnApprovedDrivers,
   getDriverDetails,
+  approveDriver,
 };
