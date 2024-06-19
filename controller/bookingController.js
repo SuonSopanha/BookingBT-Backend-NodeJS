@@ -220,7 +220,10 @@ async function getMyBooking(req, res) {
 
   try {
     // Find all bookings where userId matches the user's id
-    const bookings = await Booking.findAll({ where: { userId } });
+    const bookings = await Booking.findAll({
+      where: { userId },
+      order: [["createdAt", "DESC"]],
+    });
 
     // If no bookings found, return a message
     if (!bookings.length) {
@@ -280,6 +283,51 @@ async function updateBookingStatus(req, res) {
   }
 }
 
+async function getDriverBooking(req, res) {
+  const { id } = req.params;
+
+  try {
+    // Find all bookings where driverId matches the provided id, ordered by createdAt in DESC
+    const bookings = await Booking.findAll({
+      where: { driverId: id },
+      order: [['createdAt', 'DESC']],
+    });
+
+    // If no bookings found, return a message
+    if (!bookings.length) {
+      return res
+        .status(404)
+        .json({ message: "No bookings found for this Driver" });
+    }
+
+    // Fetch the associated service and user for each booking
+    const bookingsWithServices = await Promise.all(
+      bookings.map(async (booking) => {
+        const service = await Service.findOne({
+          where: { id: booking.serviceId },
+        });
+
+        const user = await User.findOne({
+          where: { id: booking.userId },
+        });
+
+        return {
+          ...booking.toJSON(), // Convert the booking instance to a plain object
+          service, 
+          user, // Include the service and user details
+        };
+      })
+    );
+
+    // Return the bookings with associated services
+    res.json(bookingsWithServices);
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   createBooking,
   getAllBookings,
@@ -288,5 +336,6 @@ module.exports = {
   deleteBooking,
   getReciptById,
   getMyBooking,
-  updateBookingStatus
+  updateBookingStatus,
+  getDriverBooking,
 };

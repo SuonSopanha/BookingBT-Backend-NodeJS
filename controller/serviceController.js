@@ -67,13 +67,24 @@ async function getAllServices(req, res) {
         "email",
         "averageRating",
         "photoURL",
+        "isApproved",
       ],
     });
 
-    // Fetch all schedules related to services
+    // Filter drivers to include only those who are approved
+    const approvedDriverIds = drivers
+      .filter((driver) => driver.isApproved)
+      .map((driver) => driver.id);
+
+    // Filter services to include only those with approved drivers
+    const approvedServices = services.filter((service) =>
+      approvedDriverIds.includes(service.driverId)
+    );
+
+    // Fetch all schedules related to approved services
     const schedules = await Schedule.findAll({
       where: {
-        serviceId: services.map((service) => service.id),
+        serviceId: approvedServices.map((service) => service.id),
       },
       attributes: [
         "id",
@@ -84,10 +95,10 @@ async function getAllServices(req, res) {
       ],
     });
 
-    // Fetch all pricing related to services
+    // Fetch all pricing related to approved services
     const pricings = await Pricing.findAll({
       where: {
-        serviceId: services.map((service) => service.id),
+        serviceId: approvedServices.map((service) => service.id),
       },
       attributes: [
         "id",
@@ -100,8 +111,8 @@ async function getAllServices(req, res) {
       ],
     });
 
-    // Map through services and attach driver, schedule, and pricing information
-    const servicesWithDetails = services.map((service) => {
+    // Map through approved services and attach driver, schedule, and pricing information
+    const servicesWithDetails = approvedServices.map((service) => {
       const driver = drivers.find((driver) => driver.id === service.driverId);
       const schedule = schedules.find(
         (schedule) => schedule.serviceId === service.id
@@ -216,16 +227,12 @@ async function updateService(req, res) {
     } = req.body;
 
     // Find the service by ID for the user
-    const driver = await Driver.findOne({ where: { UserId: userId } });
-    if (!driver) {
-      return res.status(404).json({ error: "Driver not found" });
-    }
 
     // Get userId from JWT token
 
     // Find all services for the user
-    const services = await Service.findAll({
-      where: { id, DriverId: driver.id },
+    const services = await Service.findOne({
+      where: { id },
     });
 
     // If service not found
@@ -233,18 +240,29 @@ async function updateService(req, res) {
       return res.status(404).json({ error: "Service not found" });
     }
 
-    // Update each service individually
-    for (let i = 0; i < services.length; i++) {
-      await services[i].update({
-        soloRideOption: soloRideOption || services[i].soloRideOption,
-        category: category || services[i].category,
-        destination: destination || services[i].destination,
-        location: location || services[i].location,
-        vehicleType: vehicleType || services[i].vehicleType,
-        maxSeat: maxSeat || services[i].maxSeat,
-        vehiclePictureURL: vehiclePictureURL || services[i].vehiclePictureURL,
-      });
-    }
+    // // Update each service individually
+    // for (let i = 0; i < services.length; i++) {
+    //   await services[i].update({
+    //     soloRideOption: soloRideOption || services[i].soloRideOption,
+    //     category: category || services[i].category,
+    //     destination: destination || services[i].destination,
+    //     location: location || services[i].location,
+    //     vehicleType: vehicleType || services[i].vehicleType,
+    //     maxSeat: maxSeat || services[i].maxSeat,
+    //     vehiclePictureURL: vehiclePictureURL || services[i].vehiclePictureURL,
+    //   });
+    // }
+
+    // Update the service
+    await services.update({
+      soloRideOption: soloRideOption || services.soloRideOption,
+      category: category || services.category,
+      destination: destination || services.destination,
+      location: location || services.location,
+      vehicleType: vehicleType || services.vehicleType,
+      maxSeat: maxSeat || services.maxSeat,
+      vehiclePictureURL: vehiclePictureURL || services.vehiclePictureURL,
+    });
 
     // Return success response
     res.json({ message: "Service(s) updated successfully", services });
@@ -343,7 +361,6 @@ async function serviceSearch(req, res) {
       startLocation,
       startDate,
       startTime,
-
     } = req.body;
 
     // Fetch all services from the database
@@ -356,11 +373,16 @@ async function serviceSearch(req, res) {
 
     // Filter services based on endLocation and startLocation
     const filteredServices = allServices.filter((service) => {
-      const isDestinationMatch = calculateSimilarity(service.destination, endLocation);
-      const isLocationMatch = calculateSimilarity(service.location, startLocation);
+      const isDestinationMatch = calculateSimilarity(
+        service.destination,
+        endLocation
+      );
+      const isLocationMatch = calculateSimilarity(
+        service.location,
+        startLocation
+      );
       return isDestinationMatch && isLocationMatch;
     });
-
 
     const driverIds = filteredServices.map((service) => service.driverId);
 
@@ -428,13 +450,6 @@ async function serviceSearch(req, res) {
       };
     });
 
-
-
-
-
-
-
-
     res.json(servicesWithDetails);
   } catch (error) {
     console.log(error);
@@ -478,7 +493,10 @@ function calculateLevenshteinDistance(a, b) {
 
 function calculateSimilarity(a, b) {
   // Calculate the Levenshtein distance
-  const distance = calculateLevenshteinDistance(a.toLowerCase(), b.toLowerCase());
+  const distance = calculateLevenshteinDistance(
+    a.toLowerCase(),
+    b.toLowerCase()
+  );
 
   // Calculate similarity as a ratio
   const maxLength = Math.max(a.length, b.length);
@@ -487,10 +505,6 @@ function calculateSimilarity(a, b) {
   // Return true if similarity ratio is greater than 0.5, otherwise false
   return similarityRatio > 0.5;
 }
-
-
-
-
 
 module.exports = {
   createService,
