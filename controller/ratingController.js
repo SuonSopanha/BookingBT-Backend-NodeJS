@@ -1,6 +1,7 @@
 const Rating = require("../db/models/rating");
 const Booking = require("../db/models/booking");
 const Driver = require("../db/models/driver");
+const User = require("../db/models/user");
 const { where } = require("sequelize");
 
 // Function to create a rating
@@ -18,8 +19,8 @@ async function createRating(req, res) {
     const userId = req.user.id;
 
     // Check if the user has booked this driver before
-    const userBooking = await User.findOne({
-      where: { id: userId, driverId: DriverId },
+    const userBooking = await Booking.findOne({
+      where: { userId: userId, driverId: DriverId },
     });
 
     if (!userBooking) {
@@ -170,10 +171,56 @@ async function deleteRating(req, res) {
   }
 }
 
+
+async function getRatingByDriver(req, res) {
+  try {
+    const { id } = req.params;
+
+    // Fetch all ratings for the given driver ID
+    const ratings = await Rating.findAll({ where: { driverId: id } });
+    
+    // If no ratings found, return a 404 response
+    if (!ratings || ratings.length === 0) {
+      return res.status(404).json({ error: "Ratings not found" });
+    }
+
+    // Extract all unique user IDs from the ratings
+    const userIds = [...new Set(ratings.map(rating => rating.userId))];
+
+    // Fetch user data for each user ID
+    const users = await User.findAll({
+      where: {
+        id: userIds,
+      },
+      attributes: ['id', 'fullName', 'email','photoURL'], // Specify the attributes you need
+    });
+
+    // Create a user map for quick lookup
+    const userMap = users.reduce((acc, user) => {
+      acc[user.id] = user;
+      return acc;
+    }, {});
+
+    // Attach user data to each rating
+    const ratingsWithUserData = ratings.map(rating => ({
+      ...rating.toJSON(),
+      user: userMap[rating.userId],
+    }));
+
+    // Send the response with the ratings and attached user data
+    res.json(ratingsWithUserData);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   createRating,
   getAllRatings,
   getRatingById,
   updateRating,
   deleteRating,
+  getRatingByDriver,
 };

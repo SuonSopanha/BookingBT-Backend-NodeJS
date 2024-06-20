@@ -57,7 +57,6 @@ const Rating = sequelize.define(
     modelName: "Rating",
     tableName: "Ratings",
     timestamps: true,
-    underscored: true,
   }
 );
 

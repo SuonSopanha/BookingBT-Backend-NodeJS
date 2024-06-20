@@ -222,7 +222,7 @@ async function getMyBooking(req, res) {
     // Find all bookings where userId matches the user's id
     const bookings = await Booking.findAll({
       where: { userId },
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "ASC"]],
     });
 
     // If no bookings found, return a message
