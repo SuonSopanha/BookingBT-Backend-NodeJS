@@ -7,6 +7,7 @@ const {getReciptById,getMyBooking,updateBookingStatus,getDriverBooking} = requir
 const {getMyServices,serviceSearch} = require("../controller/serviceController");
 const {getAllUsers} = require("../controller/userController");
 const {getStatistics} = require("../controller/adminController");
+const {getRatingByDriver} = require("../controller/ratingController");
 
 router.get("/top-drivers", getTopDrivers);
 router.get("/recipt/:id",getReciptById);
@@ -21,6 +22,7 @@ router.get("/driver-details/:id",getDriverDetails);
 router.get("/getStatistics",getStatistics);
 router.get("/driver-booking/:id",authenticateToken,getDriverBooking);
 router.put("/approve-driver/:id",approveDriver);
+router.get("/driver-rating/:id",getRatingByDriver);
 
 
 

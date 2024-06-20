@@ -399,13 +399,25 @@ async function serviceSearch(req, res) {
         "email",
         "averageRating",
         "photoURL",
+        "isApproved",
       ],
     });
 
-    // Fetch all schedules related to services
+    // Filter out drivers that are not approved
+    const approvedDrivers = drivers.filter((driver) => driver.isApproved);
+
+    // Get the IDs of the approved drivers
+    const approvedDriverIds = approvedDrivers.map((driver) => driver.id);
+
+    // Filter services to only include those with approved drivers
+    const approvedServices = filteredServices.filter((service) =>
+      approvedDriverIds.includes(service.driverId)
+    );
+
+    // Fetch all schedules related to approved services
     const schedules = await Schedule.findAll({
       where: {
-        serviceId: filteredServices.map((service) => service.id),
+        serviceId: approvedServices.map((service) => service.id),
       },
       attributes: [
         "id",
@@ -416,10 +428,10 @@ async function serviceSearch(req, res) {
       ],
     });
 
-    // Fetch all pricing related to services
+    // Fetch all pricing related to approved services
     const pricings = await Pricing.findAll({
       where: {
-        serviceId: filteredServices.map((service) => service.id),
+        serviceId: approvedServices.map((service) => service.id),
       },
       attributes: [
         "id",
@@ -432,9 +444,11 @@ async function serviceSearch(req, res) {
       ],
     });
 
-    // Map through services and attach driver, schedule, and pricing information
-    const servicesWithDetails = filteredServices.map((service) => {
-      const driver = drivers.find((driver) => driver.id === service.driverId);
+    // Map through approved services and attach driver, schedule, and pricing information
+    const servicesWithDetails = approvedServices.map((service) => {
+      const driver = approvedDrivers.find(
+        (driver) => driver.id === service.driverId
+      );
       const schedule = schedules.find(
         (schedule) => schedule.serviceId === service.id
       );
