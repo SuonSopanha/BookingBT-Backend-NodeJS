@@ -1,5 +1,5 @@
-const Notification = require("../db/models/notification");
-const Driver = require("../db/models/driver");
+const Notification = require("../db/models/Notification");
+const Driver = require("../db/models/Driver");
 
 // Function to create a notification
 async function createNotification(req, res) {

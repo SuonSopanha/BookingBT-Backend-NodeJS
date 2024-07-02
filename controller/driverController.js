@@ -1,8 +1,8 @@
-const Driver = require("../db/models/driver");
-const Service = require("../db/models/service");
-const Schedule = require("../db/models/schedule");
-const Pricing = require("../db/models/pricing");
-const User = require("../db/models/user");
+const Driver = require("../db/models/Driver");
+const Service = require("../db/models/Service");
+const Schedule = require("../db/models/Schedule");
+const Pricing = require("../db/models/Pricing");
+const User = require("../db/models/User");
 
 // Function to create a new driver
 async function createDriver(req, res) {

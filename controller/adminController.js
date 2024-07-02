@@ -1,7 +1,7 @@
 const { Op, fn, col, literal } = require("sequelize");
-const User = require("../db/models/user");
-const Booking = require("../db/models/booking");
-const Driver = require("../db/models/driver");
+const User = require("../db/models/User");
+const Booking = require("../db/models/Booking");
+const Driver = require("../db/models/Driver");
 
 async function getStatistics(req, res) {
   try {
