@@ -1,8 +1,5 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../../config/database');
-const Driver = require('./Driver');
-const bcrypt = require('bcrypt');
-const Booking = require('./Booking');
 
 
 // Define User model
@@ -81,10 +78,10 @@ const User = sequelize.define(
 
 
 // Define associations
-User.assosiations = (Driver) => {
-  User.hasMany(Driver,{ foreignKey: 'userId', sourceKey: 'id' });
-  User.hasMany(Booking,{ foreignKey:'userId',sourceKey:'id'})
-  User.hasMany(Notification,{ foreignKey:'userId',sourceKey:'id'})
+User.assosiations = (models) => {
+  User.hasMany(models.Driver,{ foreignKey: 'userId', sourceKey: 'id' });
+  User.hasMany(models.Booking,{ foreignKey:'userId',sourceKey:'id'})
+  User.hasMany(models.Notification,{ foreignKey:'userId',sourceKey:'id'})
 };
 
 
