@@ -43,6 +43,11 @@ app.use('/api/v1/notification',notificationRouter)
 app.use('/api/v1/driverService',driverServiceRouter)
 
 app.use('/api/v1/',customRouter)
+app.get('/files', (req, res) => {
+    const fs = require('fs');
+    const files = fs.readdirSync('./db/models');
+    res.json(files);
+  });
 
 
 app.use('*', (req, res) => {
