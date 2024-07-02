@@ -1,7 +1,7 @@
-const Rating = require("../db/models/rating");
-const Booking = require("../db/models/booking");
-const Driver = require("../db/models/driver");
-const User = require("../db/models/user");
+const Rating = require("../db/models/Rating");
+const Booking = require("../db/models/Booking");
+const Driver = require("../db/models/Driver");
+const User = require("../db/models/User");
 const { where } = require("sequelize");
 
 // Function to create a rating

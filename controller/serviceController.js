@@ -1,7 +1,7 @@
-const Service = require("../db/models/service");
-const Driver = require("../db/models/driver");
-const Schedule = require("../db/models/schedule");
-const Pricing = require("../db/models/pricing");
+const Service = require("../db/models/Service");
+const Driver = require("../db/models/Driver");
+const Schedule = require("../db/models/Schedule");
+const Pricing = require("../db/models/Pricing");
 
 const { Op, where } = require("sequelize");
 

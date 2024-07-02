@@ -1,7 +1,7 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../../config/database');
-const User = require('./user');
-const Driver = require('./driver');
+const User = require('./User');
+const Driver = require('./Driver');
 
 // Define Suspension model
 const Suspension = sequelize.define(

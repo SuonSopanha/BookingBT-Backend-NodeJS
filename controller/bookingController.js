@@ -1,7 +1,7 @@
-const Booking = require("../db/models/booking");
-const Service = require("../db/models/service");
-const User = require("../db/models/user");
-const Driver = require("../db/models/driver");
+const Booking = require("../db/models/Booking");
+const Service = require("../db/models/Service");
+const User = require("../db/models/User");
+const Driver = require("../db/models/Driver");
 // Function to create a booking
 async function createBooking(req, res) {
   try {

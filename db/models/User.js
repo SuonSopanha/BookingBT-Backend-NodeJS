@@ -1,8 +1,8 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../../config/database');
-const Driver = require('./driver');
+const Driver = require('./Driver');
 const bcrypt = require('bcrypt');
-const Booking = require('./booking');
+const Booking = require('./Booking');
 
 
 // Define User model

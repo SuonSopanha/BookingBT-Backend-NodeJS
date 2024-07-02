@@ -1,5 +1,5 @@
-const Suspension = require("../db/models/suspension");
-const Driver = require("../db/models/driver");
+const Suspension = require("../db/models/Suspension");
+const Driver = require("../db/models/Driver");
 
 // Function to create a suspension
 async function createSuspension(req, res) {
