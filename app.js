@@ -16,7 +16,7 @@ const customRouter = require('./routes/customRoute')
 const sequelize = require('./config/database');
 const cors = require('cors');
 
-const {  getTopDrivers} = require('./controller/driverController');
+const {  getTopDrivers } = require('./controller/driverController');
 
 const app = express();
 
