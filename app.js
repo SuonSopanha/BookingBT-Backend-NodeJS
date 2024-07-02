@@ -49,6 +49,12 @@ app.use('*', (req, res) => {
     res.status(404).json()
 });
 
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
 // Route to fetch all users
 
 const PORT = process.env.APP_PORT || 5000;
