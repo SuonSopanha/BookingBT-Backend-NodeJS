@@ -21,7 +21,9 @@ const {  getTopDrivers } = require('./controller/driverController');
 const app = express();
 
 app.use(cors({
-    origin: 'https://book-bt-nextjs.vercel.app', // Replace with your Next.js application's domain
+    // origin: 'https://book-bt-nextjs.vercel.app', // Replace with your Next.js application's domain
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true // If you're using cookies or authentication headers, set this to true
   }));
 app.use(express.json());
