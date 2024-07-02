@@ -1,9 +1,9 @@
 // config/database.js
 
 const Sequelize = require('sequelize');
-
+const pg = require('pg');
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
+  dialect: pg,
   dialectOptions: {
     ssl: {
       require: true,
