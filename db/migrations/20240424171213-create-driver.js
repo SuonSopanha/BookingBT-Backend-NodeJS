@@ -51,7 +51,32 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+
+      driverLicense:{
+        type:Sequelize.STRING,
+        allowNull:false,
+      },
+
+      licenseNumber:{
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+
+      licenseExpireDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      
+      drivingExperience: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+
       isApproved: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      isSuspended:{
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },

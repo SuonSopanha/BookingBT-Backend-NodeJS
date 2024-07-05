@@ -44,12 +44,15 @@ const Report = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    isClear: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    }
   },
   {
     modelName: "Report",
     tableName: "Reports",
     timestamps: true,
-    underscored: true,
   }
 );
 

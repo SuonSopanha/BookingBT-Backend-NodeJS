@@ -2,13 +2,13 @@ const router = require("express").Router();
 
 const authenticateToken = require('../middleware/authenticateToken');
 
-const { getTopDrivers,checkDriverRole,getUnApprovedDrivers,getDriverDetails,approveDriver } = require("../controller/driverController");
-const {getReciptById,getMyBooking,updateBookingStatus,getDriverBooking} = require("../controller/bookingController");
+const { getTopDrivers,checkDriverRole,getUnApprovedDrivers,getDriverDetails,approveDriver,getHighestBookingDrivers, } = require("../controller/driverController");
+const {getReciptById,getMyBooking,updateBookingStatus,getDriverBooking,getEveryBookingService} = require("../controller/bookingController");
 const {getMyServices,serviceSearch} = require("../controller/serviceController");
 const {getAllUsers} = require("../controller/userController");
 const {getStatistics} = require("../controller/adminController");
 const {getRatingByDriver} = require("../controller/ratingController");
-const {suspendUser,suspendDriver,deleteSuspension} = require("../controller/suspensionController");
+const {suspendUser,suspendDriver,deleteSuspension,unsuspendDriver} = require("../controller/suspensionController");
 
 router.get("/top-drivers", getTopDrivers);
 router.get("/recipt/:id",getReciptById);
@@ -27,7 +27,9 @@ router.get("/driver-rating/:id",getRatingByDriver);
 router.post("/suspend-driver/:id",suspendDriver);
 router.post("/suspend-user/:id",suspendUser);
 router.post("/delete-suspension/:id",deleteSuspension);
-
+router.get("/everyBooking",getEveryBookingService);
+router.get("/highest-booking",getHighestBookingDrivers);
+router.put("/unsuspend-driver/:id",unsuspendDriver);
 
 
 module.exports = router
