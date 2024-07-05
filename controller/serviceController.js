@@ -68,12 +68,13 @@ async function getAllServices(req, res) {
         "averageRating",
         "photoURL",
         "isApproved",
+        "isSuspended",
       ],
     });
 
     // Filter drivers to include only those who are approved
     const approvedDriverIds = drivers
-      .filter((driver) => driver.isApproved)
+      .filter((driver) => driver.isApproved && !driver.isSuspended)
       .map((driver) => driver.id);
 
     // Filter services to include only those with approved drivers
@@ -400,11 +401,12 @@ async function serviceSearch(req, res) {
         "averageRating",
         "photoURL",
         "isApproved",
+        "isSuspended",
       ],
     });
 
     // Filter out drivers that are not approved
-    const approvedDrivers = drivers.filter((driver) => driver.isApproved);
+    const approvedDrivers = drivers.filter((driver) => driver.isApproved && !driver.isSuspended);
 
     // Get the IDs of the approved drivers
     const approvedDriverIds = approvedDrivers.map((driver) => driver.id);

@@ -215,6 +215,54 @@ async function getReciptById(req, res) {
   }
 }
 
+async function getEveryBookingService(req, res) {
+  try {
+    // Find all bookings
+    const bookings = await Booking.findAll();
+
+    // If no bookings found
+    if (!bookings.length) {
+      return res.status(404).json({ error: "No bookings found" });
+    }
+
+    // Get user, driver, and service data for each booking
+    const results = await Promise.all(bookings.map(async (booking) => {
+      const user = await User.findByPk(booking.userId, {
+        attributes: ["fullName","photoURL"], // Adjust based on your User model attributes
+      });
+
+      const driver = await Driver.findByPk(booking.driverId, {
+        attributes: ["firstName", "lastName", "contactNumber","photoURL"], // Adjust based on your Driver model attributes
+      });
+
+      const service = await Service.findByPk(booking.serviceId, {
+        attributes: ["location", "destination", "category"],
+      });
+
+      // Combine the results for each booking
+      return {
+        ...booking.toJSON(),
+        userFullName: user ? user.fullName : null,
+        userPhotoURL: user ? user.photoURL : null,
+        driverPhotoURL: driver ? driver.photoURL : null,
+        driverFirstName: driver ? driver.firstName : null,
+        driverLastName: driver ? driver.lastName : null,
+        driverContactNumber: driver ? driver.contactNumber : null,
+        location: service ? service.location : null,
+        destination: service ? service.destination : null,
+        category: service ? service.category : null,
+      };
+    }));
+
+    // Return the combined results
+    res.json(results);
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 async function getMyBooking(req, res) {
   const userId = req.user.id;
 
@@ -338,4 +386,5 @@ module.exports = {
   getMyBooking,
   updateBookingStatus,
   getDriverBooking,
+  getEveryBookingService,
 };

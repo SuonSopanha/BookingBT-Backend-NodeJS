@@ -15,7 +15,7 @@ const Driver = sequelize.define(
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      foreignKey: 'UserId',
+      foreignKey: "UserId",
 
       references: {
         model: "User",
@@ -58,13 +58,39 @@ const Driver = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+
+    driverLicense: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
+    licenseNumber: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
+    licenseExpireDate: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
+
+    drivingExperience: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+
     averageRating: {
       type: Sequelize.FLOAT,
-      defaultValue: 0
+      defaultValue: 0,
     },
     isApproved: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
+    },
+    isSuspended: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      allowNull: true,
     },
   },
   {
@@ -75,9 +101,18 @@ const Driver = sequelize.define(
 );
 
 Driver.associate = function (models) {
-  Driver.hasMany(models.Service, { foreignKey: "driverId", onDelete: "CASCADE" });
-  Driver.hasMany(models.Booking, { foreignKey: "driverId", onDelete: "CASCADE" });
-  Driver.hasMany(models.Notification, { foreignKey: "driverId", onDelete: "CASCADE" });
+  Driver.hasMany(models.Service, {
+    foreignKey: "driverId",
+    onDelete: "CASCADE",
+  });
+  Driver.hasMany(models.Booking, {
+    foreignKey: "driverId",
+    onDelete: "CASCADE",
+  });
+  Driver.hasMany(models.Notification, {
+    foreignKey: "driverId",
+    onDelete: "CASCADE",
+  });
   Driver.belongsTo(models.User, { foreignKey: "userId", onDelete: "CASCADE" });
 };
 

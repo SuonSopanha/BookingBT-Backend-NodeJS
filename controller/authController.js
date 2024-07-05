@@ -39,7 +39,7 @@ const signup = async (req, res, next) => {
         });
 
         // Generate JWT token
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
         return res.status(200).json({
             success: true,
@@ -79,7 +79,7 @@ const login = async (req, res, next) => {
             });
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
         
         return res.status(200).json({
             success: true,

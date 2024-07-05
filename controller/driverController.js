@@ -3,6 +3,7 @@ const Service = require("../db/models/Service");
 const Schedule = require("../db/models/Schedule");
 const Pricing = require("../db/models/Pricing");
 const User = require("../db/models/User");
+const Booking = require("../db/models/Booking");
 
 // Function to create a new driver
 async function createDriver(req, res) {
@@ -17,6 +18,10 @@ async function createDriver(req, res) {
       contactNumber,
       email,
       address,
+      licenseNumber,
+      licenseExpireDate,
+      drivingExperience,
+      driverLicense
     } = req.body;
 
     // Create the driver with UserId
@@ -30,6 +35,10 @@ async function createDriver(req, res) {
       contactNumber,
       email,
       address,
+      licenseNumber,
+      licenseExpireDate,
+      drivingExperience,
+      driverLicense
     });
 
     // Return success response
@@ -65,6 +74,40 @@ async function getTopDrivers(req, res) {
     });
 
     // Return top drivers
+    res.json(topDrivers);
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+async function getHighestBookingDrivers(req, res) {
+  try {
+    // Fetch all drivers
+    const drivers = await Driver.findAll();
+
+    // For each driver, count the number of bookings
+    const driverBookingCounts = await Promise.all(
+      drivers.map(async (driver) => {
+        const bookingCount = await Booking.count({
+          where: { driverId: driver.id },
+        });
+
+        return {
+          ...driver.toJSON(),
+          bookingCount,
+        };
+      })
+    );
+
+    // Sort the drivers based on the booking count in descending order
+    driverBookingCounts.sort((a, b) => b.bookingCount - a.bookingCount);
+
+    // Get the top 5 drivers
+    const topDrivers = driverBookingCounts.slice(0, 5);
+
+    // Return the top 5 drivers
     res.json(topDrivers);
   } catch (error) {
     // Handle errors
@@ -176,7 +219,7 @@ async function checkDriverRole(req, res, next) {
     if (!driver) {
       return res.json({ isDriver: false });
     } else {
-      return res.json({ isDriver: true , driver: driver });
+      return res.json({ isDriver: true, driver: driver });
     }
   } catch (e) {
     return res.json({ error: e.message });
@@ -299,4 +342,5 @@ module.exports = {
   getUnApprovedDrivers,
   getDriverDetails,
   approveDriver,
+  getHighestBookingDrivers
 };

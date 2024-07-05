@@ -148,25 +148,86 @@ async function suspendUser(req, res) {
   }
 }
 
-// Function to suspend a driver
 async function suspendDriver(req, res) {
   try {
-    const { id } = req.params;
-    const { driverId, suspensionLevel, reason, startDate, endDate } = req.body;
+    const { id } = req.params; // assuming this is the driver's ID
+    const { reason, duration } = req.body;
+
+    let suspensionLevel;
+    let endDate = new Date();
+
+    // Set the suspension level and calculate the end date
+    switch (duration) {
+      case "1":
+        suspensionLevel = 1;
+        endDate.setDate(endDate.getDate() + 1);
+        break;
+      case "3":
+        suspensionLevel = 2;
+        endDate.setDate(endDate.getDate() + 3);
+        break;
+      case "7":
+        suspensionLevel = 3;
+        endDate.setDate(endDate.getDate() + 7);
+        break;
+      case "30":
+        suspensionLevel = 4;
+        endDate.setDate(endDate.getDate() + 30);
+        break;
+      default:
+        return res.status(400).json({ error: "Invalid duration" });
+    }
 
     // Create the suspension for the driver
     const suspension = await Suspension.create({
-      driverId,
+      driverId: id,
       suspensionLevel,
       reason,
-      startDate,
+      startDate: new Date(),
       endDate,
     });
+
+    // Find the driver by ID
+    const driver = await Driver.findByPk(id);
+
+    if (!driver) {
+      return res.status(404).json({ error: "Driver not found" });
+    }
+
+    // Update driver.isSuspended to true
+    driver.isSuspended = true;
+    await driver.save();
 
     // Return success response
     res
       .status(201)
       .json({ message: "Driver suspended successfully", suspension });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+async function unsuspendDriver(req,res) {
+  try {
+    const { id } = req.params; // assuming this is the driver's ID
+
+    // Find the driver by ID
+    const driver = await Driver.findByPk(id);
+
+    if (!driver) {
+      return res.status(404).json({ error: "Driver not found" });
+    }
+
+    // Update driver.isSuspended to true
+    driver.isSuspended = false;
+    await driver.save();
+
+    // Return success response
+    res
+      .status(201)
+      .json({ message: "Driver unsuspended successfully", driver });
   } catch (error) {
     // Handle errors
     console.error(error);
@@ -182,4 +243,5 @@ module.exports = {
   deleteSuspension,
   suspendUser,
   suspendDriver,
+  unsuspendDriver,
 };
